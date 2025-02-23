@@ -1,0 +1,63 @@
+@import "./tailwind.css";
+
+@font-face {
+  font-family: "Roobert";
+  src: url("/fonts/Roobert/RoobertTRIAL-Light-BF67243fd502239.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roobert";
+  src: url("/fonts/Roobert/RoobertTRIAL-Regular-BF67243fd53fdf2.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roobert";
+  src: url("/fonts/Roobert/RoobertTRIAL-Medium-BF67243fd53e059.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roobert";
+  src: url("/fonts/Roobert/RoobertTRIAL-SemiBold-BF67243fd540abb.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roobert";
+  src: url("/fonts/Roobert/RoobertTRIAL-Bold-BF67243fd540abb.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roobert";
+  src: url("/fonts/Roobert/RoobertTRIAL-Heavy-BF67243fd53e164.otf") format("opentype");
+  font-weight: 800;
+  font-style: normal;
+}
+
+:root {
+  /*   --background: #ffffff;
+  --foreground: #171717; */
+  --tailor-grey: #F1F1F0;
+  --tailor-blue: #264BEB
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+} */
+
+body {
+  /*   color: var(--foreground);
+  background: var(--background); */
+  font-family: "Roobert", sans-serif;
+}
