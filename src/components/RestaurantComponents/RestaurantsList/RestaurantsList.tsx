@@ -1,4 +1,4 @@
-import RestaurantCard from "../RestaurantComponents/RestaurantCard/RestaurantCard";
+import RestaurantCard from "@/components/RestaurantComponents/RestaurantCard/RestaurantCard";
 
 export default function RestaurantsList({
   data,

@@ -10,9 +10,10 @@ export default function Signin(): React.ReactNode {
         <LoginForm />
         <p className="mt-4 text-xs">
           ¿No tienes una cuenta?{" "}
-          <Link href="/signup" className="underline">
-            Regístrate
-          </Link>
+          <span className="underline">
+            {" "}
+            <Link href="/signup">Regístrate</Link>
+          </span>
         </p>
       </div>
       <HeroImage src="/images/login.jpeg" />

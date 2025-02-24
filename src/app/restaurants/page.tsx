@@ -1,4 +1,4 @@
-import RestaurantsList from "@/components/RestaurantsList/RestaurantsList";
+import RestaurantsList from "@/components/RestaurantComponents/RestaurantsList/RestaurantsList";
 import RestaurantServices from "@/services/restaurant.services";
 import CustomMap from "@/components/CustomMap/CustomMap";
 
