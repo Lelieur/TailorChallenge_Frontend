@@ -12,6 +12,10 @@ class RestaurantServices {
   getAllRestaurants() {
     return this.axiosApp.get("/restaurants");
   }
+
+  getRestaurantById(id: string) {
+    return this.axiosApp.get(`/restaurants/${id}`);
+  }
 }
 
 export default new RestaurantServices();

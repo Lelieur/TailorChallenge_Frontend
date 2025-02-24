@@ -3,7 +3,6 @@
 import { useCallback, useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
-import markerIcon from "@/assets/marker.svg";
 import darkMapStyle from "@/styles/darkMapStyle";
 
 interface MarkerType {

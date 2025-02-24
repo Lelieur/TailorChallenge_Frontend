@@ -5,16 +5,20 @@ import { useState } from "react";
 export default function RestaurantImageCard({
   src,
   width,
+  height,
 }: {
   src: string;
   width: string;
+  height?: string;
 }): React.ReactNode {
   const [srcImage, setSrcImage] = useState(src);
   const fallbackSrc = "/images/taberna-hobbit.jpeg";
 
   return (
     <div
-      className={`relative w-${width} aspect-square rounded-lg overflow-hidden me-2`}
+      className={`relative w-${width} ${
+        height ? `h-${height}` : "aspect-square"
+      } rounded-lg overflow-hidden me-2`}
     >
       <img
         src={srcImage}
