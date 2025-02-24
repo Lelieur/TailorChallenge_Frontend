@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <main className="h-full flex flex-col-reverse md:flex-row items-end justify-between p-7">
       <div className="w-full md:w-1/2 bg-[var(--tailor-grey)] rounded-lg md:mr-7 p-4">
-        <Logo className="mb-4" />
+        <Logo className="mb-4 w-1/2 max-w-[194px]" />
         <p>Hola,</p>
         <p className="mb-10">
           Bienvenido a mi prueba para Tailor hub. Aquí podréis ver mis
