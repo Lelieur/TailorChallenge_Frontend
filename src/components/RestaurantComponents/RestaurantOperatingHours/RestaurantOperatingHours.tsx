@@ -1,5 +1,6 @@
 export default function RestaurantOperatingHours({
   operating_hours,
+  size,
 }: {
   operating_hours: {
     Monday: string;
@@ -10,17 +11,28 @@ export default function RestaurantOperatingHours({
     Saturday: string;
     Sunday: string;
   };
+  size?: "small" | "large";
 }) {
   return (
-    <div className="flex flex-row gap-2 items-center">
-      {Object.entries(operating_hours).map(([key, value]) => (
-        <div className="group relative" key={key}>
-          <span className="group-hover:hidden border border-gray-300 rounded-md px-1 w-10">
-            {key.slice(0, 3)}
-          </span>
-          <span className="hidden group-hover:block text-xs">{value}</span>
-        </div>
-      ))}
+    <div className="flex flex-row">
+      {size === "small" &&
+        Object.entries(operating_hours).map(([key, value]) => (
+          <div className="group relative mr-2" key={key}>
+            <span className="group-hover:hidden border border-gray-300 rounded-md px-1 w-10 text-xs md:text-sm">
+              {key.slice(0, 3)}
+            </span>
+            <span className="hidden group-hover:block text-xs">{value}</span>
+          </div>
+        ))}
+
+      {size === "large" &&
+        Object.entries(operating_hours).map(([key, value]) => (
+          <div key={key} className="mr-5 text-xs xl:text-sm">
+            <p className="font-bold">{key}</p>
+            <p>{value.split("-")[0]}</p>
+            <p>{value.split("-")[1]}</p>
+          </div>
+        ))}
     </div>
   );
 }

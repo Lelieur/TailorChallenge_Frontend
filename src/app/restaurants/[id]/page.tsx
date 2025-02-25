@@ -29,10 +29,10 @@ export default async function RestaurantPage({
           <p className="">{address}</p>
         </div>
       </div>
-      <div className="mx-20 mt-10">
-        <div className="grid grid-cols-10 p-5">
-          <div className="col-span-7 grid grid-cols-2">
-            <div>
+      <div className="xl:mx-20 xl:mt-10">
+        <div className="lg:grid lg:grid-cols-10 p-5">
+          <div className="lg:col-span-6 xl:col-span-7 flex flex-col justify-between">
+            <div className="w-full">
               <div className="flex flex-row gap-2 items-center mb-3">
                 <RestaurantCuisineType cuisine_type={cuisine_type} />
                 <h2 className="text-2xl font-bold">{name}</h2>
@@ -44,16 +44,19 @@ export default async function RestaurantPage({
                 <span className="font-bold">Address:</span> {address}
               </p>
             </div>
-            <div>
-              <RestaurantOperatingHours operating_hours={operating_hours} />
+            <div className="hidden md:block mt-5 lg:mt-0">
+              <RestaurantOperatingHours
+                operating_hours={operating_hours}
+                size="large"
+              />
             </div>
           </div>
-          <div className="col-span-3 border border-black rounded-lg">
+          <div className="mt-5 lg:mt-0 lg:col-span-4 xl:col-span-3 border border-black rounded-lg">
             <ReviewForm />
           </div>
         </div>
-        <div className="grid grid-cols-10 text-left">
-          <div className="col-span-7">
+        <div className="xl:grid xl:grid-cols-10 text-left">
+          <div className="xl:col-span-7">
             <ReviewsList reviews={reviews} />
           </div>
         </div>

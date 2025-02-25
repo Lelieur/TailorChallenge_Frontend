@@ -14,8 +14,17 @@ export default function ReviewForm() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(formData);
+  };
+
   return (
-    <form action="" className="h-full p-3 flex flex-col justify-between">
+    <form
+      onSubmit={handleSubmit}
+      className="h-full p-3 flex flex-col justify-between"
+    >
       <div>
         <input
           type="radio"
@@ -30,7 +39,7 @@ export default function ReviewForm() {
           value={formData.comment}
           onChange={handleChange}
           placeholder="Escribe tu comentario sobre el restaurante"
-          className="w-full resize-none"
+          className="w-full resize-none focus:outline-none"
         />
       </div>
       <button
