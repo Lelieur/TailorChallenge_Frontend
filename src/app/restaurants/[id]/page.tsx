@@ -21,7 +21,7 @@ export default async function RestaurantPage({
   } = restaurant;
 
   return (
-    <main className="flex-1 flex flex-col p-7 overflow-y-auto">
+    <main className="flex-1 flex flex-col overflow-y-auto">
       <div className="relative w-full h-1/2">
         <RestaurantImage src={restaurant.image} width="full" height="full" />
         <div className="absolute top-1/2 translate-y-[-50%] w-full text-center text-white">

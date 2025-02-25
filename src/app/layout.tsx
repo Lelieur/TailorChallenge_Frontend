@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 
 import { AuthProviderWrapper } from "@/context/auth.context";
 import Footer from "@/components/Footer/Footer";
+import NavBar from "@/components/NavBar/NavBar";
 
 export const metadata: Metadata = {
   title: "TailorHub Challenge",
@@ -12,17 +13,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en" className="h-screen w-screen">
-      <body className="w-full h-full flex flex-col">
+      <body className="w-full h-full flex flex-col px-7 pt-7 pb-3">
         <AuthProviderWrapper>
+          <NavBar />
           {children}
-          <footer>
-            <Footer />
-          </footer>
+          <Footer />
         </AuthProviderWrapper>
       </body>
     </html>

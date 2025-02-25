@@ -4,7 +4,7 @@ import Logo from "@/assets/logo.svg";
 
 export default function Home() {
   return (
-    <main className="h-full flex flex-col-reverse md:flex-row items-end justify-between p-7">
+    <main className="h-full flex flex-col-reverse md:flex-row items-end justify-between">
       <div className="w-full md:w-1/2 bg-[var(--tailor-grey)] rounded-lg md:mr-7 p-4">
         <Logo className="mb-4 w-1/2 max-w-[194px]" />
         <p>Hola,</p>

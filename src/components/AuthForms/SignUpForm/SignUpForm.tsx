@@ -31,6 +31,9 @@ export default function SignUpForm() {
       })
       .catch((error) => {
         console.log(error);
+        if (error.response.data.message === "User already registered") {
+          alert(error.response.data.message);
+        }
       });
   };
 
@@ -115,14 +118,13 @@ export default function SignUpForm() {
               className="block w-3/4 rounded-full px-3 py-1 bg-transparent border border-white placeholder:text-white placeholder:opacity-50"
             />
           </fieldset>
-          <Link href="/login">
-            <button
-              className="px-6 py-2 rounded-2xl bg-white text-black font-bold hover:bg-black hover:text-white transition-all duration-300"
-              type="submit"
-            >
-              Finalizar
-            </button>
-          </Link>
+
+          <button
+            className="px-6 py-2 rounded-2xl bg-white text-black font-bold hover:bg-black hover:text-white transition-all duration-300"
+            type="submit"
+          >
+            Finalizar
+          </button>
         </>
       )}
     </form>

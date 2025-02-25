@@ -13,19 +13,16 @@ export default function Stars({
       )
     : rating || 0;
 
-  const stars = Array(averageRating).fill(<Star />);
-  const emptyStars = Array(5 - averageRating).fill(<Star />);
-
   return (
     <div className="flex flex-row">
       <div className="flex flex-row">
-        {stars.map((star, index) => (
-          <Star key={`star-${index}`} />
+        {Array.from({ length: averageRating || 0 }).map((_, index) => (
+          <Star key={`star-${index}`} className="w-5 h-5 xl:w-6 xl:h-6" />
         ))}
       </div>
       <div className="flex flex-row opacity-50">
-        {emptyStars.map((star, index) => (
-          <Star key={`empty-star-${index}`} />
+        {Array.from({ length: 5 - (averageRating || 0) }).map((_, index) => (
+          <Star key={`empty-star-${index}`} className="w-5 h-5 xl:w-6 xl:h-6" />
         ))}
       </div>
     </div>

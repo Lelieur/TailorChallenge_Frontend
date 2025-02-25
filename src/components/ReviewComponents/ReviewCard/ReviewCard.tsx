@@ -1,4 +1,4 @@
-import { Review } from "@/types/Review";
+import { Review } from "@/interfaces/Review.inteface";
 import Stars from "@/components/Stars/Stars";
 
 export default function ReviewCard({ review }: { review: Review }) {

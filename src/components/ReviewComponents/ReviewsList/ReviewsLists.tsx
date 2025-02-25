@@ -1,5 +1,5 @@
 import ReviewCard from "../ReviewCard/ReviewCard";
-import { Review } from "@/types/Review";
+import { Review } from "@/interfaces/Review.inteface";
 
 export default function ReviewsList({ reviews }: { reviews: Review[] }) {
   return (

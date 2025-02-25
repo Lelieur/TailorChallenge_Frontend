@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
+import { LoginData, SignupData } from "@/interfaces/Auth.interface";
 
 class AuthServices {
   private axiosApp: AxiosInstance;
@@ -10,9 +11,11 @@ class AuthServices {
 
     this.axiosApp.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
-        const storedToken = localStorage.getItem("authToken");
-        if (storedToken) {
-          config.headers.Authorization = `Bearer ${storedToken}`;
+        if (typeof window !== undefined) {
+          const storedToken = localStorage.getItem("authToken");
+          if (storedToken) {
+            config.headers.Authorization = `Bearer ${storedToken}`;
+          }
         }
 
         return config;
@@ -20,20 +23,18 @@ class AuthServices {
     );
   }
 
-  signupUser(userData: object) {
+  signupUser(userData: SignupData) {
+    console.log(userData);
     return this.axiosApp.post("/signup", userData);
   }
 
-  loginUser(userData: object) {
+  loginUser(userData: LoginData) {
     return this.axiosApp.post("/login", userData);
   }
 
-  verifyUser(token: string) {
-    return this.axiosApp.get("/verify", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  verifyUser(token?: string) {
+    const header = token ? { Authorization: `Bearer ${token}` } : {};
+    return this.axiosApp.get("/verify", { headers: header });
   }
 }
 

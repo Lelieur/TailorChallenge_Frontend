@@ -1,6 +1,6 @@
 import HeroImage from "@/components/HeroImage/HeroImage";
 import Logo from "@/assets/logo.svg";
-import SignUpForm from "@/components/SignUpForm/SignUpForm";
+import SignUpForm from "@/components/AuthForms/SignUpForm/SignUpForm";
 
 export default function SignUp(): React.ReactNode {
   return (

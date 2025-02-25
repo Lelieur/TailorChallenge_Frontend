@@ -14,11 +14,11 @@ export default function RestaurantOperatingHours({
   size?: "small" | "large";
 }) {
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row gap-1">
       {size === "small" &&
         Object.entries(operating_hours).map(([key, value]) => (
-          <div className="group relative mr-2" key={key}>
-            <span className="group-hover:hidden border border-gray-300 rounded-md px-1 w-10 text-xs md:text-sm">
+          <div className="group relative " key={key}>
+            <span className="group-hover:hidden border border-gray-300 rounded-md px-1 w-10 text-xs xl:text-sm">
               {key.slice(0, 3)}
             </span>
             <span className="hidden group-hover:block text-xs">{value}</span>

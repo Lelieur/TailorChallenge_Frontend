@@ -8,6 +8,9 @@ export default function HeroImage({ src }: { src: string }): React.ReactNode {
         alt="Interior of a modern, dimly lit restaurant with wooden tables, pendant lights, and a few people dining."
         fill
         className="object-cover"
+        sizes="w-full h-full"
+        priority
+        loading="eager"
       />
     </div>
   );

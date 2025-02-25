@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
+import Star from "@/assets/star.svg";
 export default function ReviewForm() {
   const [formData, setFormData] = useState({
     rating: 0,
@@ -15,6 +15,10 @@ export default function ReviewForm() {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleRatingChange = (rating: number) => {
+    setFormData({ ...formData, ["rating"]: rating });
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(formData);
@@ -26,13 +30,17 @@ export default function ReviewForm() {
       className="h-full p-3 flex flex-col justify-between"
     >
       <div>
-        <input
-          type="radio"
-          id="rating"
-          name="rating"
-          value={formData.rating}
-          onChange={handleChange}
-        />
+        <div className="flex flex-row">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <Star
+              key={`star-${index}`}
+              onClick={() => handleRatingChange(index + 1)}
+              className={`cursor-pointer ${
+                formData.rating >= index + 1 ? "opacity-100" : "opacity-50"
+              }`}
+            />
+          ))}
+        </div>
         <textarea
           id="comment"
           name="comment"

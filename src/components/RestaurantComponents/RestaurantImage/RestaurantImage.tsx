@@ -8,11 +8,17 @@ export default function RestaurantImageCard({
   height,
 }: {
   src: string;
-  width: string;
+  width?: string;
   height?: string;
 }): React.ReactNode {
   const [srcImage, setSrcImage] = useState(src);
   const fallbackSrc = "/images/taberna-hobbit.jpeg";
+
+  const handleImageError = () => {
+    if (srcImage === fallbackSrc) {
+      setSrcImage(fallbackSrc);
+    }
+  };
 
   return (
     <div
@@ -24,10 +30,7 @@ export default function RestaurantImageCard({
         src={srcImage}
         alt="Restaurant image"
         className="w-full h-full object-cover"
-        onError={(e) => {
-          e.currentTarget.src = fallbackSrc;
-          setSrcImage(fallbackSrc);
-        }}
+        onError={handleImageError}
       />
     </div>
   );

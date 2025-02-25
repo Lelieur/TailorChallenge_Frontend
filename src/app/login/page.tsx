@@ -1,6 +1,6 @@
 import HeroImage from "@/components/HeroImage/HeroImage";
 import Logo from "@/assets/logo.svg";
-import LoginForm from "@/components/LoginForm/LoginForm";
+import LoginForm from "@/components/AuthForms/LoginForm/LoginForm";
 import Link from "next/link";
 export default function Signin(): React.ReactNode {
   return (

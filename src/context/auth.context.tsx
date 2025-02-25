@@ -1,16 +1,18 @@
 "use client";
 
 import { createContext, useEffect, useState, PropsWithChildren } from "react";
-import authServices from "@/services/auth.services";
+import { User } from "@/interfaces/User.interface";
 
-interface User {
-  id?: string;
-  email?: string;
-  username?: string;
-}
+import AuthServices from "@/services/auth.services";
 
-const AuthContext = createContext({
-  loggedUser: {},
+const AuthContext = createContext<{
+  loggedUser: User | undefined;
+  loginUser: (userData: User) => void;
+  logoutUser: () => void;
+  authenticateUser: () => void;
+  isFetchingUser: boolean;
+}>({
+  loggedUser: undefined,
   loginUser: (userData: any) => {},
   logoutUser: () => {},
   authenticateUser: () => {},
@@ -18,7 +20,7 @@ const AuthContext = createContext({
 });
 
 function AuthProviderWrapper({ children }: PropsWithChildren) {
-  const [loggedUser, setLoggedUser] = useState({});
+  const [loggedUser, setLoggedUser] = useState<User | undefined>(undefined); // Permitir undefined
   const [isFetchingUser, setIsFetchingUser] = useState(true);
 
   const loginUser = (userData: User) => {
@@ -26,7 +28,7 @@ function AuthProviderWrapper({ children }: PropsWithChildren) {
   };
 
   const logoutUser = () => {
-    setLoggedUser({});
+    setLoggedUser(undefined);
     setIsFetchingUser(false);
     localStorage.removeItem("authToken");
   };
@@ -35,8 +37,7 @@ function AuthProviderWrapper({ children }: PropsWithChildren) {
     const token = localStorage.getItem("authToken");
 
     if (token) {
-      authServices
-        .verifyUser(token)
+      AuthServices.verifyUser(token)
         .then(({ data }) => {
           loginUser(data.loggedUserData);
           setIsFetchingUser(false);
