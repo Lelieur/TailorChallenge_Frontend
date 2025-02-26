@@ -166,7 +166,7 @@ export default function NewRestaurantForm() {
     console.log(formData);
     RestaurantClientServices.createRestaurant(formData)
       .then((response) => {
-        router.push(`/restaurants/${response.data._id}`);
+        router.push(`/success/${response.data._id}`);
       })
       .catch((error) => {
         console.error("Error creando el restaurante:", error);

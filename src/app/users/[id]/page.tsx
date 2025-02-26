@@ -7,6 +7,8 @@ import { User } from "@/interfaces/User.interface";
 import UserServices from "@/services/user.services";
 import ReviewCard from "@/components/ReviewComponents/ReviewCard/ReviewCard";
 import RestaurantCard from "@/components/RestaurantComponents/RestaurantCard/RestaurantCard";
+import { Restaurant } from "@/interfaces/Restaurant.interface";
+import { Review } from "@/interfaces/Review.inteface";
 
 export default function UserPage(): React.ReactNode {
   const { id } = useParams();
@@ -42,7 +44,7 @@ export default function UserPage(): React.ReactNode {
           </h3>
           <hr className="border-[var(--tailor-blue)]" />
           {favoriteRestaurants?.map((restaurant, index) => (
-            <RestaurantCard key={index} data={restaurant} />
+            <RestaurantCard key={index} data={restaurant as Restaurant} />
           ))}
         </div>
         <div className="col-span-10 lg:col-span-4 flex flex-col gap-4 ">
@@ -51,7 +53,7 @@ export default function UserPage(): React.ReactNode {
           </h3>
           <hr className="border-[var(--tailor-blue)]" />
           {reviews?.map((review, index) => (
-            <ReviewCard key={index} review={review} />
+            <ReviewCard key={index} review={review as Review} />
           ))}
         </div>
       </div>
