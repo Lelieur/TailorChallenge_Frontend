@@ -1,7 +1,9 @@
 import Link from "next/link";
 import Icono from "@/assets/icono.svg";
+import { useParams } from "next/navigation";
 
-export default function Success({ id }: { id?: string }) {
+export default function Success(): React.ReactNode {
+  const { id } = useParams();
   return (
     <div className="m-auto flex flex-col items-center justify-between h-1/4">
       <Icono />
