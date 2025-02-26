@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useEffect, useState, PropsWithChildren } from "react";
+import {
+  createContext,
+  useEffect,
+  useState,
+  PropsWithChildren,
+  useCallback,
+} from "react";
 import { User } from "@/interfaces/User.interface";
 
 import AuthServices from "@/services/auth.services";
@@ -13,7 +19,7 @@ const AuthContext = createContext<{
   isFetchingUser: boolean;
 }>({
   loggedUser: undefined,
-  loginUser: (userData: User) => {},
+  loginUser: () => {},
   logoutUser: () => {},
   authenticateUser: () => {},
   isFetchingUser: true,
@@ -33,7 +39,7 @@ function AuthProviderWrapper({ children }: PropsWithChildren) {
     localStorage.removeItem("authToken");
   };
 
-  const authenticateUser = () => {
+  const authenticateUser = useCallback(() => {
     const token = localStorage.getItem("authToken");
 
     if (token) {
@@ -49,7 +55,7 @@ function AuthProviderWrapper({ children }: PropsWithChildren) {
     } else {
       logoutUser();
     }
-  };
+  }, []);
 
   useEffect(() => authenticateUser(), [authenticateUser]);
 
