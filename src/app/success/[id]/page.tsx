@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Icono from "@/assets/icono.svg";
 import { useParams } from "next/navigation";
