@@ -35,4 +35,5 @@ class ReviewServices {
   }
 }
 
-export default new ReviewServices();
+const reviewServicesInstance = new ReviewServices();
+export default reviewServicesInstance;

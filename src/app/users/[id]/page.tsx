@@ -21,7 +21,7 @@ export default function UserPage(): React.ReactNode {
     };
 
     fetchData();
-  }, []);
+  }, [id]);
 
   return (
     <main className="h-full flex flex-col w-full xl:w-3/4 mx-auto">

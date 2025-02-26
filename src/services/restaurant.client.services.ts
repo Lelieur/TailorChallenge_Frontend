@@ -1,7 +1,7 @@
 "use client";
 
 import axios, { AxiosInstance } from "axios";
-import { Restaurant } from "@/interfaces/Restaurante.interface";
+import { Restaurant } from "@/interfaces/Restaurant.interface";
 
 class RestaurantClientServices {
   private axiosApp: AxiosInstance;
@@ -27,4 +27,5 @@ class RestaurantClientServices {
   }
 }
 
-export default new RestaurantClientServices();
+const restaurantClientServicesInstance = new RestaurantClientServices();
+export default restaurantClientServicesInstance;

@@ -5,14 +5,12 @@ import React, { useEffect, useRef } from "react";
 interface AutocompleteAddres {
   handleAddressChanged: (place: google.maps.places.PlaceResult) => void;
   placeholder?: string;
-  formData?: any;
   id?: string;
 }
 
 export default function AutocompleteInput({
   handleAddressChanged,
   placeholder,
-  formData,
   id,
 }: AutocompleteAddres) {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -34,14 +32,13 @@ export default function AutocompleteInput({
         handleAddressChanged(place);
       }
     });
-  }, [handleAddressChanged]);
+  }, [handleAddressChanged, id]);
 
   return (
     <input
       type="text"
       ref={inputRef}
       name={id}
-      value={formData}
       placeholder={placeholder}
       id={id}
       className="block w-full rounded-full border border-black px-3 py-1 focus:outline-none"

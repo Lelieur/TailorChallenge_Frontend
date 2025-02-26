@@ -37,7 +37,7 @@ export default function AddReviewForm() {
         day: "numeric",
       }),
     });
-  }, [loggedUser]);
+  }, [loggedUser, id]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -53,7 +53,7 @@ export default function AddReviewForm() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     ReviewServices.createReview(formData)
-      .then((response) => {
+      .then(() => {
         setFormData({
           rating: 0,
           name: "",

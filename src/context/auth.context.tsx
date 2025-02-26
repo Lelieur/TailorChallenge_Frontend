@@ -13,7 +13,7 @@ const AuthContext = createContext<{
   isFetchingUser: boolean;
 }>({
   loggedUser: undefined,
-  loginUser: (userData: any) => {},
+  loginUser: (userData: User) => {},
   logoutUser: () => {},
   authenticateUser: () => {},
   isFetchingUser: true,
@@ -42,13 +42,16 @@ function AuthProviderWrapper({ children }: PropsWithChildren) {
           loginUser(data.loggedUserData);
           setIsFetchingUser(false);
         })
-        .catch((err) => logoutUser());
+        .catch((err) => {
+          console.log(err);
+          logoutUser();
+        });
     } else {
       logoutUser();
     }
   };
 
-  useEffect(() => authenticateUser(), []);
+  useEffect(() => authenticateUser(), [authenticateUser]);
 
   return (
     <AuthContext.Provider

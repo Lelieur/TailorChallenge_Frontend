@@ -4,7 +4,7 @@ import { useState, useRef, useContext, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import { AuthContext } from "@/context/auth.context";
-import { Restaurant } from "@/interfaces/Restaurante.interface";
+import { Restaurant } from "@/interfaces/Restaurant.interface";
 
 import { LoadScript } from "@react-google-maps/api";
 import type { LoadScriptProps } from "@react-google-maps/api";
@@ -52,7 +52,7 @@ export default function NewRestaurantForm() {
       ...formData,
       ["createdBy"]: loggedUser?.id || "",
     });
-  }, []);
+  }, [formData, loggedUser?.id]);
 
   const [isImageLoading, setIsImageLoading] = useState(false);
   const [staticOpenHours, setStaticOpenHours] = useState<string>("");

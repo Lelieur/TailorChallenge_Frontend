@@ -10,7 +10,7 @@ import { useState } from "react";
 import Stars from "@/components/Stars/Stars";
 import EditReviewForm from "../EditReviewForm/EditReviewForm";
 
-export default function ReviewCard({ review }: { review: any }) {
+export default function ReviewCard({ review }: { review: Review }) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 

@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
+import { Restaurant } from "@/interfaces/Restaurant.interface";
+
 import darkMapStyle from "@/styles/darkMapStyle";
 import RestaurantServices from "@/services/restaurant.services";
 
@@ -18,7 +20,6 @@ const mapContainerStyle = {
 
 export default function CustomMap() {
   const [markers, setMarkers] = useState<MarkerType[]>([]);
-  const [map, setMap] = useState<google.maps.Map | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,7 +27,7 @@ export default function CustomMap() {
         const { data: restaurants } =
           await RestaurantServices.getAllRestaurants();
         const markersData = restaurants.map(
-          (restaurant: any) => restaurant.latlng
+          (restaurant: Restaurant) => restaurant.latlng
         );
         setMarkers(markersData);
       } catch (error) {
@@ -57,7 +58,7 @@ export default function CustomMap() {
   );
 
   const onUnmount = useCallback(() => {
-    setMap(null);
+    setMarkers([]);
   }, []);
 
   const mapOptions: google.maps.MapOptions = {

@@ -1,4 +1,5 @@
 export interface Restaurant {
+  _id?: string;
   name?: string;
   neighborhood?: string;
   address?: string;

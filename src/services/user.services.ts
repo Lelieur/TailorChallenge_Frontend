@@ -1,8 +1,8 @@
 "use client";
 
 import axios, { AxiosInstance } from "axios";
-
-class ReviewServices {
+import { User } from "@/interfaces/User.interface";
+class UserServices {
   private axiosApp: AxiosInstance;
 
   constructor() {
@@ -25,11 +25,11 @@ class ReviewServices {
     return this.axiosApp.get(`/users/${id}`);
   }
 
-  addFavoriteRestaurant(restaurantId: string, loggedUser: any) {
+  addFavoriteRestaurant(restaurantId: string, loggedUser: User) {
     return this.axiosApp.put(`/users/addfavorite/${restaurantId}`, loggedUser);
   }
 
-  removeFavoriteRestaurant(restaurantId: string, loggedUser: any) {
+  removeFavoriteRestaurant(restaurantId: string, loggedUser: User) {
     return this.axiosApp.put(
       `/users/removefavorite/${restaurantId}`,
       loggedUser
@@ -37,4 +37,5 @@ class ReviewServices {
   }
 }
 
-export default new ReviewServices();
+const userServicesInstance = new UserServices();
+export default userServicesInstance;

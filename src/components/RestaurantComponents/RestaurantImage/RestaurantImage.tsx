@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 export default function RestaurantImageCard({
   src,
@@ -26,11 +27,13 @@ export default function RestaurantImageCard({
         height ? `h-${height}` : "aspect-square"
       } rounded-lg overflow-hidden me-2`}
     >
-      <img
+      <Image
         src={srcImage}
         alt="Restaurant image"
         className="w-full h-full object-cover"
         onError={handleImageError}
+        layout="fill"
+        objectFit="cover"
       />
     </div>
   );

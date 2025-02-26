@@ -5,14 +5,12 @@ import RestaurantImageCard from "../RestaurantImage/RestaurantImage";
 import RestaurantCuisineType from "../RestaurantCuisineType/RestaurantCuisineType";
 import RestaurantOperatingHours from "../RestaurantOperatingHours/RestaurantOperatingHours";
 import Link from "next/link";
-
-import { useContext } from "react";
-import { AuthContext } from "@/context/auth.context";
+import { Restaurant } from "@/interfaces/Restaurant.interface";
 
 export default function RestaurantCard({
   data,
 }: {
-  data: any;
+  data: Restaurant;
 }): React.ReactNode {
   const {
     image,
@@ -25,8 +23,6 @@ export default function RestaurantCard({
     _id,
   } = data;
 
-  const { loggedUser } = useContext(AuthContext);
-
   return (
     <Link href={`/restaurants/${_id}`}>
       <div className="flex flex-row h-48 opacity-50 hover:opacity-100 transition-opacity duration-300 hover:cursor-pointer">
@@ -37,7 +33,7 @@ export default function RestaurantCard({
         <div className="flex flex-col justify-between p-2 w-3/5 md:w-3/4 lg:w-3/5 xl:w-3/4">
           <div>
             <div className="flex flex-row gap-2 items-center mb-2">
-              <RestaurantCuisineType cuisine_type={cuisine_type} />
+              <RestaurantCuisineType cuisine_type={cuisine_type || ""} />
               <h2 className="text-xl xl:text-2xl font-bold">{name}</h2>
             </div>
             <div className="mb-2">
@@ -49,13 +45,25 @@ export default function RestaurantCard({
               </p>
             </div>
             <RestaurantOperatingHours
-              operating_hours={operating_hours}
+              operating_hours={{
+                Monday: operating_hours?.Monday || "",
+                Tuesday: operating_hours?.Tuesday || "",
+                Wednesday: operating_hours?.Wednesday || "",
+                Thursday: operating_hours?.Thursday || "",
+                Friday: operating_hours?.Friday || "",
+                Saturday: operating_hours?.Saturday || "",
+                Sunday: operating_hours?.Sunday || "",
+              }}
               size="small"
             />
           </div>
           <div className="flex flex-row gap-2 items-center">
-            <Stars ratings={reviews.map((review: any) => review.rating)} />
-            <span>{`(${reviews.length} comentarios)`}</span>
+            <Stars
+              ratings={reviews?.map(
+                (review: { rating: number }) => review.rating
+              )}
+            />
+            <span>{`(${reviews?.length} comentarios)`}</span>
           </div>
         </div>
       </div>

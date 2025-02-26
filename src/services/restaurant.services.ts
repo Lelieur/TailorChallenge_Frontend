@@ -18,4 +18,5 @@ class RestaurantServices {
   }
 }
 
-export default new RestaurantServices();
+const restaurantServicesInstance = new RestaurantServices();
+export default restaurantServicesInstance;

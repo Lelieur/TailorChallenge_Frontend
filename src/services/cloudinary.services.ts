@@ -38,4 +38,5 @@ class UploadServices {
   }
 }
 
-export default new UploadServices();
+const uploadServicesInstance = new UploadServices();
+export default uploadServicesInstance;
