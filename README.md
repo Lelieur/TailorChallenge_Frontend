@@ -23,6 +23,7 @@ Esto es el frontend de la aplicación de prueba para Tailor Hub. Su objetivo es 
 - **Framework**: Next.js
 - **Base de Datos**: MongoDB
 - **Otras Tecnologías**: Tailwind CSS
+- **APIs externas**: Google Maps API
 
 ## Instalación
 
@@ -46,3 +47,4 @@ Para configurar la aplicación, sigue estos pasos:
 
 1. Copia el archivo `.env.example` a `.env`: `cp .env.example .env`
 2. Edita el archivo `.env` con tus credenciales y configuraciones específicas.
+3. El CORS de la API y de Google Maps API desde local es en el puerto 5173.

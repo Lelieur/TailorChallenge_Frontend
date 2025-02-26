@@ -37,7 +37,7 @@ export default function AddReviewForm() {
         day: "numeric",
       }),
     });
-  }, [loggedUser, id, formData]);
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>

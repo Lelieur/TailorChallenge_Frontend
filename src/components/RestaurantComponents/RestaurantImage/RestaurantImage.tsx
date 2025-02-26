@@ -32,8 +32,9 @@ export default function RestaurantImageCard({
         alt="Restaurant image"
         className="w-full h-full object-cover"
         onError={handleImageError}
-        layout="fill"
-        objectFit="cover"
+        fill
+        sizes="full"
+        priority
       />
     </div>
   );

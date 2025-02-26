@@ -77,20 +77,15 @@ export default function CustomMap() {
         onUnmount={onUnmount}
         options={mapOptions}
       >
-        {markers.map(
-          (marker, index) => (
-            console.log(marker),
-            (
-              <Marker
-                key={index}
-                position={{ lat: marker.lat, lng: marker.lng }}
-                icon={{
-                  url: "/assets/marker.svg",
-                }}
-              />
-            )
-          )
-        )}
+        {markers.map((marker, index) => (
+          <Marker
+            key={index}
+            position={{ lat: marker.lat, lng: marker.lng }}
+            icon={{
+              url: "/assets/marker.svg",
+            }}
+          />
+        ))}
       </GoogleMap>
     </LoadScript>
   );
