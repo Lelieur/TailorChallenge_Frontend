@@ -52,12 +52,20 @@ export default function NavBar(): React.ReactNode {
         ref={ref}
       >
         <div>
-          <p className="m-0">Mi cuenta</p>
+          <Link
+            href={`/users/${loggedUser?.id}`}
+            onClick={() => setShowMenu(false)}
+          >
+            <p className="m-0">Mi cuenta</p>
+          </Link>
           <Link href="/create-restaurant" onClick={() => setShowMenu(false)}>
             <p className="m-0">Añadir restaurante</p>
           </Link>
         </div>
         <hr />
+        <Link href="/restaurants" onClick={() => setShowMenu(false)}>
+          <p className="m-0">Restaurantes</p>
+        </Link>
         <button
           className="bg-white text-black font-bold px-4 py-2 rounded-full w-full"
           onClick={() => {

@@ -10,7 +10,7 @@ import { useState } from "react";
 import Stars from "@/components/Stars/Stars";
 import EditReviewForm from "../EditReviewForm/EditReviewForm";
 
-export default function ReviewCard({ review }: { review: Review }) {
+export default function ReviewCard({ review }: { review: any }) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -18,7 +18,6 @@ export default function ReviewCard({ review }: { review: Review }) {
   const { name, date, rating, comments, authorId } = review;
 
   const handleDeleteReview = () => {
-    console.log(review._id);
     if (!review._id) return;
 
     ReviewServices.deleteReview(review._id)

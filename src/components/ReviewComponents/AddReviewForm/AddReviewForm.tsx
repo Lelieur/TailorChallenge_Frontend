@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 
 import { Review } from "@/interfaces/Review.inteface";
 
-export default function ReviewForm() {
+export default function AddReviewForm() {
   const router = useRouter();
   const { id } = useParams();
   const { loggedUser } = useContext(AuthContext);
@@ -54,7 +54,6 @@ export default function ReviewForm() {
     e.preventDefault();
     ReviewServices.createReview(formData)
       .then((response) => {
-        console.log(response);
         setFormData({
           rating: 0,
           name: "",

@@ -5,7 +5,7 @@ export interface Restaurant {
   image?: string;
   description?: string;
   cuisine_type?: string;
-  latlang?: {
+  latlng?: {
     lat: number;
     lng: number;
   };

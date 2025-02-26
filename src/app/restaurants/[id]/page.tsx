@@ -3,7 +3,8 @@ import RestaurantImage from "@/components/RestaurantComponents/RestaurantImage/R
 import ReviewsList from "@/components/ReviewComponents/ReviewsList/ReviewsLists";
 import RestaurantCuisineType from "@/components/RestaurantComponents/RestaurantCuisineType/RestaurantCuisineType";
 import RestaurantOperatingHours from "@/components/RestaurantComponents/RestaurantOperatingHours/RestaurantOperatingHours";
-import ReviewForm from "@/components/ReviewComponents/ReviewForm/ReviewForm";
+import AddReviewForm from "@/components/ReviewComponents/AddReviewForm/AddReviewForm";
+import HandleFavButtons from "@/components/HandleFavButtons/HandleFavButtons";
 export default async function RestaurantPage({
   params,
 }: {
@@ -28,6 +29,9 @@ export default async function RestaurantPage({
         <div className="absolute top-1/2 translate-y-[-50%] w-full text-center text-white">
           <h2 className="font-bold text-4xl mb-3">{name}</h2>
           <p className="">{address}</p>
+          <div className="mt-5">
+            <HandleFavButtons id={id} />
+          </div>
         </div>
       </div>
       <div className="xl:mx-20 xl:mt-10">
@@ -53,7 +57,7 @@ export default async function RestaurantPage({
             </div>
           </div>
           <div className="mt-5 lg:mt-0 lg:col-span-4 xl:col-span-3 border border-black rounded-lg">
-            <ReviewForm />
+            <AddReviewForm />
           </div>
         </div>
         <div className="xl:grid xl:grid-cols-10 text-left">

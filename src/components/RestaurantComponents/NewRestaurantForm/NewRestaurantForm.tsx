@@ -30,7 +30,7 @@ export default function NewRestaurantForm() {
     image: "",
     description: "",
     cuisine_type: "",
-    latlang: {
+    latlng: {
       lat: 0,
       lng: 0,
     },
@@ -69,7 +69,7 @@ export default function NewRestaurantForm() {
     setFormData({
       ...formData,
       ["address"]: place.formatted_address,
-      ["latlang"]: {
+      ["latlng"]: {
         lat: place.geometry?.location?.lat() || 0,
         lng: place.geometry?.location?.lng() || 0,
       },
@@ -163,7 +163,7 @@ export default function NewRestaurantForm() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    console.log(formData);
     RestaurantClientServices.createRestaurant(formData)
       .then((response) => {
         router.push(`/restaurants/${response.data._id}`);

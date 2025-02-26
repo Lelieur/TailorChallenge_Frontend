@@ -12,10 +12,10 @@ export default function RestaurantImageCard({
   height?: string;
 }): React.ReactNode {
   const [srcImage, setSrcImage] = useState(src);
-  const fallbackSrc = "/images/taberna-hobbit.jpeg";
+  const fallbackSrc = "/images/home.jpeg";
 
   const handleImageError = () => {
-    if (srcImage === fallbackSrc) {
+    if (srcImage !== fallbackSrc) {
       setSrcImage(fallbackSrc);
     }
   };
