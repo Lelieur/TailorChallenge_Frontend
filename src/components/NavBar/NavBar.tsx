@@ -27,7 +27,7 @@ export default function NavBar(): React.ReactNode {
 
   return (
     <nav
-      className={`w-full text-sm mb-3 relative ${
+      className={` w-full text-sm mb-3 relative ${
         loggedUser ? "block" : "hidden"
       }`}
     >

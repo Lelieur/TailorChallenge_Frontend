@@ -52,7 +52,7 @@ export default function NewRestaurantForm() {
       ...formData,
       ["createdBy"]: loggedUser?.id || "",
     });
-  }, [formData, loggedUser?.id]);
+  }, []);
 
   const [isImageLoading, setIsImageLoading] = useState(false);
   const [staticOpenHours, setStaticOpenHours] = useState<string>("");
@@ -202,7 +202,7 @@ export default function NewRestaurantForm() {
               />
             </div>
           ) : (
-            <div className="col-span-2 xl:col-span-1 w-full relative">
+            <div className="col-span-2 md:col-span-1 w-full relative">
               <RestaurantImage src={formData?.image || ""} width="w-full" />
               <button
                 type="button"

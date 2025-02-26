@@ -7,6 +7,7 @@ import { Restaurant } from "@/interfaces/Restaurant.interface";
 
 import darkMapStyle from "@/styles/darkMapStyle";
 import RestaurantServices from "@/services/restaurant.services";
+import Spinner from "@/components/Spinner/Spinner";
 
 interface MarkerType {
   lat: number;
@@ -20,6 +21,7 @@ const mapContainerStyle = {
 
 export default function CustomMap() {
   const [markers, setMarkers] = useState<MarkerType[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,6 +38,7 @@ export default function CustomMap() {
     };
 
     fetchData();
+    setIsLoading(false);
   }, []);
 
   const fitBoundsToMarkers = useCallback(
@@ -66,7 +69,11 @@ export default function CustomMap() {
     styles: darkMapStyle,
   };
 
-  return (
+  return isLoading ? (
+    <div className="w-full h-full flex justify-center items-center bg-gray-900">
+      <Spinner />
+    </div>
+  ) : (
     <LoadScript
       googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ""}
     >

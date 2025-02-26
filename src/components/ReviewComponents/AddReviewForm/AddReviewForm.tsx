@@ -64,7 +64,7 @@ export default function AddReviewForm() {
         });
       })
       .then(() => {
-        router.push(`/restaurants/${id}`);
+        router.refresh();
       })
       .catch((error) => {
         console.log(error);
