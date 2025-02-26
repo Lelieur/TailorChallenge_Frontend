@@ -15,10 +15,51 @@ export default function SignUpForm() {
     username: "",
     password: "",
   });
+  const [errorMessages, setErrorMessages] = useState({
+    email: "",
+    username: "",
+    password: "",
+  });
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    if (
+      name === "email" &&
+      !/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(value)
+    ) {
+      setErrorMessages((prev) => ({ ...prev, email: "Email no válido" }));
+    } else {
+      setErrorMessages((prev) => ({ ...prev, email: "" }));
+    }
+
+    if (name === "username" && value.length < 3) {
+      setErrorMessages((prev) => ({
+        ...prev,
+        username: "El nombre de usuario debe tener al menos 3 caracteres",
+      }));
+    } else {
+      setErrorMessages((prev) => ({ ...prev, username: "" }));
+    }
+
+    if (name === "password" && value.length < 8) {
+      setErrorMessages((prev) => ({
+        ...prev,
+        password: "La contraseña debe tener al menos 8 caracteres",
+      }));
+    } else if (
+      name === "password" &&
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/.test(value)
+    ) {
+      setErrorMessages((prev) => ({
+        ...prev,
+        password:
+          "La contraseña debe tener al menos una mayúscula, una minúscula, un número y un caracter especial",
+      }));
+    } else {
+      setErrorMessages((prev) => ({ ...prev, password: "" }));
+    }
   };
 
   const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -67,6 +108,9 @@ export default function SignUpForm() {
               }}
               className="block w-3/4 rounded-full px-3 py-1 bg-transparent border border-white placeholder:text-white placeholder:opacity-50 focus:outline-none"
             />
+            {errorMessages.email && (
+              <p className="text-white">{errorMessages.email}</p>
+            )}
           </fieldset>
 
           <fieldset className="mb-3">
@@ -84,6 +128,9 @@ export default function SignUpForm() {
               pattern="[a-zA-Z0-9]{3,}"
               className="block w-3/4 rounded-full px-3 py-1 bg-transparent border border-white placeholder:text-white placeholder:opacity-50 focus:outline-none"
             />
+            {errorMessages.username && (
+              <p className="text-white">{errorMessages.username}</p>
+            )}
           </fieldset>
 
           <button
@@ -117,6 +164,9 @@ export default function SignUpForm() {
               pattern="^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$"
               className="block w-3/4 rounded-full px-3 py-1 bg-transparent border border-white placeholder:text-white placeholder:opacity-50"
             />
+            {errorMessages.password && (
+              <p className="text-white">{errorMessages.password}</p>
+            )}
           </fieldset>
 
           <button

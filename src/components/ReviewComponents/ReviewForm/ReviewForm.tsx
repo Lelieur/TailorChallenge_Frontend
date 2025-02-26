@@ -1,12 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useParams } from "next/navigation";
+import { AuthContext } from "@/context/auth.context";
+
 import Star from "@/assets/star.svg";
+import ReviewServices from "@/services/review.services";
+
+import { useRouter } from "next/navigation";
+
+import { Review } from "@/interfaces/Review.inteface";
+
 export default function ReviewForm() {
-  const [formData, setFormData] = useState({
+  const router = useRouter();
+  const { id } = useParams();
+  const { loggedUser } = useContext(AuthContext);
+
+  const [formData, setFormData] = useState<Review>({
     rating: 0,
-    comment: "",
+    name: "",
+    date: "",
+    comments: "",
+    authorId: "",
+    restaurantId: "",
   });
+
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      name: loggedUser?.username || "",
+      restaurantId: id as string,
+      authorId: loggedUser?.id || "",
+      date: new Date().toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
+    });
+  }, [loggedUser]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -21,7 +52,24 @@ export default function ReviewForm() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
+    ReviewServices.createReview(formData)
+      .then((response) => {
+        console.log(response);
+        setFormData({
+          rating: 0,
+          name: "",
+          date: "",
+          comments: "",
+          authorId: "",
+          restaurantId: "",
+        });
+      })
+      .then(() => {
+        router.push(`/restaurants/${id}`);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -36,15 +84,17 @@ export default function ReviewForm() {
               key={`star-${index}`}
               onClick={() => handleRatingChange(index + 1)}
               className={`cursor-pointer ${
-                formData.rating >= index + 1 ? "opacity-100" : "opacity-50"
+                formData.rating && formData.rating >= index + 1
+                  ? "opacity-100"
+                  : "opacity-50"
               }`}
             />
           ))}
         </div>
         <textarea
-          id="comment"
-          name="comment"
-          value={formData.comment}
+          id="comments"
+          name="comments"
+          value={formData.comments}
           onChange={handleChange}
           placeholder="Escribe tu comentario sobre el restaurante"
           className="w-full resize-none focus:outline-none"

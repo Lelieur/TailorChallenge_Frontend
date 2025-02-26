@@ -1,6 +1,9 @@
 export interface Review {
-  name: string;
-  date: string;
-  rating: number;
-  comments: string;
+  _id?: string;
+  name?: string;
+  date?: string;
+  rating?: number;
+  comments?: string;
+  authorId?: string;
+  restaurantId?: string;
 }

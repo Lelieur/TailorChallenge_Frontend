@@ -18,12 +18,13 @@ export default async function RestaurantPage({
     cuisine_type,
     reviews,
     operating_hours,
+    image,
   } = restaurant;
 
   return (
     <main className="flex-1 flex flex-col overflow-y-auto">
       <div className="relative w-full h-1/2">
-        <RestaurantImage src={restaurant.image} width="full" height="full" />
+        <RestaurantImage src={image} width="full" height="full" />
         <div className="absolute top-1/2 translate-y-[-50%] w-full text-center text-white">
           <h2 className="font-bold text-4xl mb-3">{name}</h2>
           <p className="">{address}</p>

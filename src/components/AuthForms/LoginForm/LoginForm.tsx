@@ -15,10 +15,41 @@ export default function LoginForm() {
     email: "",
     password: "",
   });
+  const [errorMessages, setErrorMessages] = useState({
+    email: "",
+    password: "",
+  });
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setLoginData({ ...loginData, [name]: value });
+
+    if (
+      name === "email" &&
+      !/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(value)
+    ) {
+      setErrorMessages((prev) => ({ ...prev, email: "Email no válido" }));
+    } else {
+      setErrorMessages((prev) => ({ ...prev, email: "" }));
+    }
+
+    if (name === "password" && value.length < 8) {
+      setErrorMessages((prev) => ({
+        ...prev,
+        password: "La contraseña debe tener al menos 8 caracteres",
+      }));
+    } else if (
+      name === "password" &&
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/.test(value)
+    ) {
+      setErrorMessages((prev) => ({
+        ...prev,
+        password:
+          "La contraseña debe tener al menos una mayúscula, una minúscula, un número y un caracter especial",
+      }));
+    } else {
+      setErrorMessages((prev) => ({ ...prev, password: "" }));
+    }
   };
 
   const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -70,6 +101,9 @@ export default function LoginForm() {
           }}
           className="block w-3/4 rounded-full px-3 py-1 bg-transparent border border-white placeholder:text-white placeholder:opacity-50 focus:outline-none"
         />
+        {errorMessages.email && (
+          <p className="text-red-500">{errorMessages.email}</p>
+        )}
       </fieldset>
 
       <fieldset className="mb-3">
@@ -86,6 +120,9 @@ export default function LoginForm() {
           placeholder="Escribe tu contraseña"
           className="block w-3/4 rounded-full px-3 py-1 bg-transparent border border-white placeholder:text-white placeholder:opacity-50"
         />
+        {errorMessages.password && (
+          <p className="text-red-500">{errorMessages.password}</p>
+        )}
       </fieldset>
 
       <button

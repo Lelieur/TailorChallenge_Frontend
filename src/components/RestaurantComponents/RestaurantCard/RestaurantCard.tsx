@@ -1,8 +1,13 @@
+"use client";
+
 import Stars from "../../Stars/Stars";
 import RestaurantImageCard from "../RestaurantImage/RestaurantImage";
 import RestaurantCuisineType from "../RestaurantCuisineType/RestaurantCuisineType";
 import RestaurantOperatingHours from "../RestaurantOperatingHours/RestaurantOperatingHours";
 import Link from "next/link";
+
+import { useContext } from "react";
+import { AuthContext } from "@/context/auth.context";
 
 export default function RestaurantCard({
   data,
@@ -19,6 +24,8 @@ export default function RestaurantCard({
     operating_hours,
     _id,
   } = data;
+
+  const { loggedUser } = useContext(AuthContext);
 
   return (
     <Link href={`/restaurants/${_id}`}>

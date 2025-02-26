@@ -24,7 +24,6 @@ class AuthServices {
   }
 
   signupUser(userData: SignupData) {
-    console.log(userData);
     return this.axiosApp.post("/signup", userData);
   }
 

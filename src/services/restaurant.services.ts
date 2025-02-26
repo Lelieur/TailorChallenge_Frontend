@@ -1,5 +1,4 @@
 import axios, { AxiosInstance } from "axios";
-import { Restaurant } from "@/interfaces/Restaurante.interface";
 
 class RestaurantServices {
   private axiosApp: AxiosInstance;
@@ -16,10 +15,6 @@ class RestaurantServices {
 
   getRestaurantById(id: string) {
     return this.axiosApp.get(`/restaurants/${id}`);
-  }
-
-  createRestaurant(restaurant: Restaurant) {
-    return this.axiosApp.post("/restaurants", restaurant);
   }
 }
 
