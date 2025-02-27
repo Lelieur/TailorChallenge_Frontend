@@ -33,15 +33,25 @@ Para instalar la parte del cliente, sigue estos pasos:
 
 1. Clona el repositorio del backend: `git clone https://github.com/Lelieur/TailorChallenge_Backend`
 2. Navega al directorio del proyecto: `cd TailorChallenge_Backend`
-3. Instala las dependencias: `npm install`
 
-## Uso
+## Para ejecutar la aplicación, utiliza en ambas carpetas el siguiente comando:
 
-Para ejecutar la aplicación, utiliza en ambas carpetas el siguiente comando:
+1. Asegúrate de que todas las dependencias estén instaladas:
 
-```bash
-npm run dev
-```
+   ```bash
+   npm install
+   ```
+
+2. Si es necesario, construye el proyecto:
+
+   ```bash
+   npm run build
+   ```
+
+3. Luego, utiliza el siguiente comando en ambas carpetas para ejecutar la aplicación:
+   ```bash
+   npm run dev
+   ```
 
 ## Configuración
 
