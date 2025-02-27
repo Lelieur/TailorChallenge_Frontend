@@ -1,12 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useState, useRef } from "react";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
-
+import { GoogleMap, Marker } from "@react-google-maps/api";
 import { Restaurant } from "@/interfaces/Restaurant.interface";
-
 import darkMapStyle from "@/styles/darkMapStyle";
 import RestaurantServices from "@/services/restaurant.services";
+
 interface MarkerType {
   lat: number;
   lng: number;
@@ -38,70 +37,60 @@ export default function CustomMap() {
     fetchData();
   }, []);
 
-  const fitBoundsToMarkers = useCallback(
-    (mapInstance: google.maps.Map) => {
-      if (markers.length === 0) return;
-      const bounds = new google.maps.LatLngBounds();
-      markers.forEach((marker) => {
-        bounds.extend(new google.maps.LatLng(marker.lat, marker.lng));
-      });
-      mapInstance.fitBounds(bounds);
-    },
-    [markers]
-  );
+  useEffect(() => {
+    if (!mapRef.current || markers.length === 0) return;
 
-  const onLoad = useCallback(
-    (map: google.maps.Map) => {
-      fitBoundsToMarkers(map);
-      window.google.maps.event.trigger(map, "resize");
-    },
-    [fitBoundsToMarkers]
-  );
+    const bounds = new google.maps.LatLngBounds();
+    markers.forEach((marker) => {
+      bounds.extend(new google.maps.LatLng(marker.lat, marker.lng));
+    });
+
+    mapRef.current.fitBounds(bounds);
+  }, [markers]);
+
+  const onLoad = useCallback((map: google.maps.Map) => {
+    mapRef.current = map;
+  }, []);
 
   const onUnmount = useCallback(() => {
-    setMarkers([]);
+    mapRef.current = null;
   }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (mapRef.current && markers.length > 0) {
+        window.google.maps.event.trigger(mapRef.current, "resize");
+
+        const bounds = new google.maps.LatLngBounds();
+        markers.forEach((marker) => {
+          bounds.extend(new google.maps.LatLng(marker.lat, marker.lng));
+        });
+        mapRef.current.fitBounds(bounds);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [markers]);
 
   const mapOptions: google.maps.MapOptions = {
     disableDefaultUI: true,
     styles: darkMapStyle,
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (mapRef.current) {
-        window.google.maps.event.trigger(mapRef.current, "resize");
-        // Opcionalmente, reubicar los límites
-        if (markers.length > 0) {
-          fitBoundsToMarkers(mapRef.current);
-        }
-      }
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [markers, fitBoundsToMarkers]);
-
   return (
-    <LoadScript
-      googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ""}
+    <GoogleMap
+      mapContainerStyle={mapContainerStyle}
+      onLoad={onLoad}
+      onUnmount={onUnmount}
+      options={mapOptions}
     >
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        zoom={15}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
-        options={mapOptions}
-      >
-        {markers.map((marker, index) => (
-          <Marker
-            key={index}
-            position={{ lat: marker.lat, lng: marker.lng }}
-            icon={{
-              url: "/assets/marker.svg",
-            }}
-          />
-        ))}
-      </GoogleMap>
-    </LoadScript>
+      {markers.map((marker, index) => (
+        <Marker
+          key={index}
+          position={{ lat: marker.lat, lng: marker.lng }}
+          icon={{ url: "/assets/marker.svg" }}
+        />
+      ))}
+    </GoogleMap>
   );
 }
