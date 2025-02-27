@@ -23,9 +23,9 @@ export default function RestaurantImageCard({
 
   return (
     <div
-      className={`relative ${width} ${
-        height ? `h-${height}` : "aspect-square"
-      } rounded-lg overflow-hidden me-2`}
+      className={`relative rounded-lg overflow-hidden ${width} ${
+        height ? `${height} aspect-[2/1]` : "aspect-square me-2"
+      }`}
     >
       <Image
         src={srcImage}

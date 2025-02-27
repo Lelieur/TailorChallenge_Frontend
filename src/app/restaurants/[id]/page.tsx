@@ -5,6 +5,7 @@ import RestaurantOperatingHours from "@/components/RestaurantComponents/Restaura
 import AddReviewForm from "@/components/ReviewComponents/AddReviewForm/AddReviewForm";
 import HandleFavButtons from "@/components/HandleFavButtons/HandleFavButtons";
 import Image from "next/image";
+import RestaurantImage from "@/components/RestaurantComponents/RestaurantImage/RestaurantImage";
 
 export default async function RestaurantPage({
   params,
@@ -26,13 +27,18 @@ export default async function RestaurantPage({
   return (
     <main className="flex-1 flex flex-col overflow-y-auto">
       <div className="relative w-full h-1/2">
-        <Image
+        <RestaurantImage
+          src={image || "/images/hero.jpeg"}
+          width="w-full"
+          height="h-full"
+        />
+        {/*  <Image
           src={image}
           alt={name}
           width={1000}
           height={1000}
           className="w-full h-full object-cover rounded-xl"
-        />
+        /> */}
         <div className="absolute top-1/2 translate-y-[-50%] w-full text-center text-white">
           <h2 className="font-bold text-4xl mb-3">{name}</h2>
           <p className="">{address}</p>
