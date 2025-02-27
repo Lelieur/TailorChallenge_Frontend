@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { useParams } from "next/navigation";
 import { AuthContext } from "@/context/auth.context";
 
@@ -18,26 +18,16 @@ export default function AddReviewForm() {
 
   const [formData, setFormData] = useState<Review>({
     rating: 0,
-    name: "",
-    date: "",
+    name: loggedUser?.username || "",
+    date: new Date().toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }),
     comments: "",
-    authorId: "",
-    restaurantId: "",
+    authorId: loggedUser?.id || "",
+    restaurantId: (id as string) || "",
   });
-
-  useEffect(() => {
-    setFormData({
-      ...formData,
-      name: loggedUser?.username || "",
-      restaurantId: id as string,
-      authorId: loggedUser?.id || "",
-      date: new Date().toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
-    });
-  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>

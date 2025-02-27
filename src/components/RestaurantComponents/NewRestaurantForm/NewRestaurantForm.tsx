@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useContext, useEffect } from "react";
+import { useState, useRef, useContext } from "react";
 import { useRouter } from "next/navigation";
 
 import { AuthContext } from "@/context/auth.context";
@@ -44,15 +44,8 @@ export default function NewRestaurantForm() {
       Sunday: "-",
     },
     reviews: [],
-    createdBy: "",
+    createdBy: loggedUser?.id || "",
   });
-
-  useEffect(() => {
-    setFormData({
-      ...formData,
-      ["createdBy"]: loggedUser?.id || "",
-    });
-  }, []);
 
   const [isImageLoading, setIsImageLoading] = useState(false);
   const [staticOpenHours, setStaticOpenHours] = useState<string>("");
