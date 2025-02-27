@@ -1,14 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 import { Restaurant } from "@/interfaces/Restaurant.interface";
 
 import darkMapStyle from "@/styles/darkMapStyle";
 import RestaurantServices from "@/services/restaurant.services";
-import Spinner from "@/components/Spinner/Spinner";
-
 interface MarkerType {
   lat: number;
   lng: number;
@@ -21,7 +19,7 @@ const mapContainerStyle = {
 
 export default function CustomMap() {
   const [markers, setMarkers] = useState<MarkerType[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const mapRef = useRef<google.maps.Map | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +36,6 @@ export default function CustomMap() {
     };
 
     fetchData();
-    setIsLoading(false);
   }, []);
 
   const fitBoundsToMarkers = useCallback(
@@ -56,6 +53,7 @@ export default function CustomMap() {
   const onLoad = useCallback(
     (map: google.maps.Map) => {
       fitBoundsToMarkers(map);
+      window.google.maps.event.trigger(map, "resize");
     },
     [fitBoundsToMarkers]
   );
@@ -69,11 +67,21 @@ export default function CustomMap() {
     styles: darkMapStyle,
   };
 
-  return isLoading ? (
-    <div className="w-full h-full flex justify-center items-center bg-gray-900">
-      <Spinner />
-    </div>
-  ) : (
+  useEffect(() => {
+    const handleResize = () => {
+      if (mapRef.current) {
+        window.google.maps.event.trigger(mapRef.current, "resize");
+        // Opcionalmente, reubicar los límites
+        if (markers.length > 0) {
+          fitBoundsToMarkers(mapRef.current);
+        }
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [markers, fitBoundsToMarkers]);
+
+  return (
     <LoadScript
       googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ""}
     >
