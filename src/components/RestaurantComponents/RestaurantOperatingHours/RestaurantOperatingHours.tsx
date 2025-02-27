@@ -14,7 +14,7 @@ export default function RestaurantOperatingHours({
   size?: "small" | "large";
 }) {
   return (
-    <div className="flex flex-row gap-1">
+    <div className="hidden sm:block sm:flex sm:flex-row sm:gap-1">
       {size === "small" &&
         Object.entries(operating_hours).map(([key, value]) => (
           <div className="group relative " key={key}>

@@ -4,8 +4,8 @@ import LoginForm from "@/components/AuthForms/LoginForm/LoginForm";
 import Link from "next/link";
 export default function Signin(): React.ReactNode {
   return (
-    <main className="h-full flex flex-col-reverse md:flex-row items-end justify-between p-7">
-      <div className="w-full md:w-1/2 bg-[var(--tailor-blue)] rounded-lg md:mr-7 p-4 text-white">
+    <main className="h-full flex flex-col-reverse md:flex-row justify-center sm:items-end justify-between">
+      <div className="text-xs sm:text-base w-full md:w-1/2 bg-[var(--tailor-blue)] rounded-lg md:mr-7 p-4 text-white">
         <div className="mb-4 w-1/2 max-w-[194px]">
           <Logo />
         </div>
@@ -18,6 +18,7 @@ export default function Signin(): React.ReactNode {
           </span>
         </p>
       </div>
+
       <HeroImage src="/images/login.jpeg" />
     </main>
   );

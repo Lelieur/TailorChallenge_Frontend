@@ -101,7 +101,7 @@ export default function LoginForm() {
               "Por favor, introduce un email válido"
             );
           }}
-          className="block w-3/4 rounded-full px-3 py-1 bg-transparent border border-white placeholder:text-white placeholder:opacity-50 focus:outline-none"
+          className="mt-2 sm:mt-0 block w-3/4 rounded-full px-3 py-1 bg-transparent border border-white placeholder:text-white placeholder:opacity-50 focus:outline-none"
         />
         {errorMessages.email && (
           <p className="text-white-500">{errorMessages.email}</p>
@@ -127,7 +127,7 @@ export default function LoginForm() {
               "La contraseña debe tener al menos 8 caracteres, un número y un caracter especial"
             );
           }}
-          className="block w-3/4 rounded-full px-3 py-1 bg-transparent border border-white placeholder:text-white placeholder:opacity-50"
+          className="mt-2 sm:mt-0 block w-3/4 rounded-full px-3 py-1 bg-transparent border border-white placeholder:text-white placeholder:opacity-50"
         />
         {errorMessages.password && (
           <p className="text-white-500">{errorMessages.password}</p>

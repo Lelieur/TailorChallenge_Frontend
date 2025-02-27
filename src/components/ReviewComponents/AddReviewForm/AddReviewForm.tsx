@@ -86,7 +86,7 @@ export default function AddReviewForm() {
           value={formData.comments}
           onChange={handleChange}
           placeholder="Escribe tu comentario sobre el restaurante"
-          className="w-full resize-none focus:outline-none"
+          className="test-sm sm:text-base w-full resize-none focus:outline-none"
         />
       </div>
       <button

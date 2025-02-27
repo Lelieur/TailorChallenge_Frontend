@@ -23,7 +23,9 @@ Esto es el frontend de la aplicación de prueba para Tailor Hub. Su objetivo es 
 - **Framework**: Next.js
 - **Base de Datos**: MongoDB
 - **Otras Tecnologías**: Tailwind CSS
-- **APIs externas**: Google Maps API
+- **APIs externas**:
+  - Google Maps API para cargar un mapa con la ubicación de los restaurantes.
+  - Cloudinary para subir y gestionar las imágenes del formulario para crear un nuevo restaurante.
 
 ## Instalación
 

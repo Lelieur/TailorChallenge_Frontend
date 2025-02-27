@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-screen w-screen">
-      <body className="w-full h-full flex flex-col px-7 pt-7 pb-3">
+      <body className="w-full h-full flex flex-col px-2 pt-2 sm:px-7 sm:pt-7 pb-3">
         <AuthProviderWrapper>
           <NavBar />
 

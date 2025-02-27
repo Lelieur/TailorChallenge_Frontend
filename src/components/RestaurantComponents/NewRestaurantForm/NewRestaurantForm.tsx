@@ -164,7 +164,7 @@ export default function NewRestaurantForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-3/4 m-auto">
+    <form onSubmit={handleSubmit} className="w-full sm:w-3/4 m-auto">
       <div className="grid grid-cols-2 gap-3">
         {formData.image === "" ? (
           <div className="col-span-2 md:col-span-1">

@@ -25,12 +25,13 @@ export default function RestaurantCard({
 
   return (
     <Link href={`/restaurants/${_id}`}>
-      <div className="flex flex-row h-48 opacity-50 hover:opacity-100 transition-opacity duration-300 hover:cursor-pointer">
+      <div className="flex flex-row sm:h-48 opacity-50 sm:hover:opacity-100 sm:transition-opacity sm:duration-300 sm:hover:cursor-pointer">
         <RestaurantImage
           src={image || "/images/hero.jpeg"}
           width="w-2/5 md:w-1/4 lg:w-2/5 xl:w-1/4"
+          isCard={true}
         />
-        <div className="flex flex-col justify-between p-2 w-3/5 md:w-3/4 lg:w-3/5 xl:w-3/4">
+        <div className="flex flex-col sm:justify-between p-2 w-full sm:w-3/5 md:w-3/4 lg:w-3/5 xl:w-3/4">
           <div>
             <div className="flex flex-row gap-2 items-center mb-2">
               <RestaurantCuisineType cuisine_type={cuisine_type || ""} />

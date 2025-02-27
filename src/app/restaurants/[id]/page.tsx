@@ -32,10 +32,10 @@ export default async function RestaurantPage({
           height="h-full"
         />
         <div className="absolute top-1/2 translate-y-[-50%] w-full text-center text-white">
-          <h2 className="font-bold text-4xl mb-3">{name}</h2>
-          <p className="">{address}</p>
+          <h2 className="font-bold text-xl sm:text-4xl mb-3">{name}</h2>
+          <p className="hidden sm:block">{address}</p>
           <div className="mt-5">
-            <HandleFavButtons id={id} />
+            <HandleFavButtons id={id} isMobile={true} />
           </div>
         </div>
       </div>
@@ -43,15 +43,21 @@ export default async function RestaurantPage({
         <div className="lg:grid lg:grid-cols-10 p-5">
           <div className="lg:col-span-6 xl:col-span-7 flex flex-col justify-between">
             <div className="w-full">
-              <div className="flex flex-row gap-2 items-center mb-3">
-                <RestaurantCuisineType cuisine_type={cuisine_type} />
-                <h2 className="text-2xl font-bold">{name}</h2>
+              <div className="flex flex-row gap-2 items-center sm:mb-3">
+                <span className="hidden sm:block">
+                  <RestaurantCuisineType cuisine_type={cuisine_type} />
+                </span>
+                <h2 className="text-lg sm:text-2xl font-bold">{name}</h2>
               </div>
               <p>
-                <span className="font-bold">Neighborhood:</span> {neighborhood}
+                <span className="text-sm sm:text-base font-bold">
+                  Neighborhood:
+                </span>
+                <span className="text-sm sm:text-base"> {neighborhood}</span>
               </p>
               <p>
-                <span className="font-bold">Address:</span> {address}
+                <span className="text-sm sm:text-base font-bold">Address:</span>
+                <span className="text-sm sm:text-base"> {address}</span>
               </p>
             </div>
             <div className="hidden md:block mt-5 lg:mt-0">

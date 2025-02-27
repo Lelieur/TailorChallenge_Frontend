@@ -7,10 +7,12 @@ export default function RestaurantImageCard({
   src,
   width,
   height,
+  isCard,
 }: {
   src: string;
   width?: string;
   height?: string;
+  isCard?: boolean;
 }): React.ReactNode {
   const [srcImage, setSrcImage] = useState(src);
   const fallbackSrc = "/images/home.jpeg";
@@ -23,7 +25,9 @@ export default function RestaurantImageCard({
 
   return (
     <div
-      className={`relative rounded-lg overflow-hidden ${width} ${
+      className={`${
+        isCard && "hidden sm:block"
+      } relative rounded-lg overflow-hidden ${width} ${
         height ? `${height} aspect-[2/1]` : "aspect-square me-2"
       }`}
     >

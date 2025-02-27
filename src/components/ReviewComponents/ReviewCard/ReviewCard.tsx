@@ -32,14 +32,14 @@ export default function ReviewCard({ review }: { review: Review }) {
   return isEditing ? (
     <EditReviewForm review={review} setIsEditing={setIsEditing} />
   ) : (
-    <div className="grid grid-cols-10 items-center border-b border-[var(--tailor-blue)] p-5">
-      <p className="font-bold text-xl">{name}</p>
-      <div className="col-span-9 pl-5">
-        <div className="w-full flex flex-col items-end mb-3">
+    <div className="sm:grid sm:grid-cols-10 sm:items-center border-b border-[var(--tailor-blue)] p-5">
+      <p className="font-bold text-xl mb-2 sm:mb-0">{name}</p>
+      <div className="sm:col-span-9 sm:pl-5">
+        <div className="w-full flex flex-col sm:items-end mb-3">
           <p className="text-xs">{date}</p>
           <Stars rating={rating} />
         </div>
-        <p className="text-sm text-justify">{comments}</p>
+        <p className="text-xs sm:text-sm text-justify">{comments}</p>
       </div>
       {loggedUser && loggedUser?.id === authorId && (
         <div className="col-span-10 flex justify-end items-end gap-3">

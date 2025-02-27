@@ -162,7 +162,7 @@ export default function SignUpForm() {
               onChange={handleOnChange}
               placeholder="Añade una contraseña"
               pattern="^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$"
-              className="block w-3/4 rounded-full px-3 py-1 bg-transparent border border-white placeholder:text-white placeholder:opacity-50"
+              className="mt-2 sm:mt-0 block w-3/4 rounded-full px-3 py-1 bg-transparent border border-white placeholder:text-white placeholder:opacity-50"
             />
             {errorMessages.password && (
               <p className="text-white">{errorMessages.password}</p>

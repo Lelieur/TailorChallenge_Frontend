@@ -5,7 +5,13 @@ import { useContext, useState, useEffect } from "react";
 
 import UserServices from "@/services/user.services";
 
-export default function HandleFavButtons({ id: restaurantId }: { id: string }) {
+export default function HandleFavButtons({
+  id: restaurantId,
+  isMobile,
+}: {
+  id: string;
+  isMobile?: boolean;
+}) {
   const { loggedUser } = useContext(AuthContext);
   const [updatedLoggedUser, setUpdatedLoggedUser] = useState(loggedUser);
 
@@ -63,7 +69,7 @@ export default function HandleFavButtons({ id: restaurantId }: { id: string }) {
           restaurantId
         )}
       >
-        Añadir a favoritos
+        {isMobile ? "Añadir" : "Añadir a favoritos"}
       </button>
       <button
         className={`px-6 py-2 rounded-2xl font-bold ${
@@ -76,7 +82,7 @@ export default function HandleFavButtons({ id: restaurantId }: { id: string }) {
           !updatedLoggedUser?.favoriteRestaurants?.includes(restaurantId)
         }
       >
-        Eliminar de favoritos
+        {isMobile ? "Quitar" : "Añadir a favoritos"}
       </button>
     </div>
   );
