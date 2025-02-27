@@ -69,7 +69,7 @@ export default function LoginForm() {
         console.log(err);
         if (err.response.data.message === "Unable to authenticate the user.") {
           alert("Datos de inicio de sesión incorrectos");
-        } else if (err.response.data.message === "User not found.") {
+        } else if (err.response.data.message === "User not found") {
           alert("El usuario no se ha encontrado");
         }
       });
