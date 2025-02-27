@@ -69,6 +69,8 @@ export default function LoginForm() {
         console.log(err);
         if (err.response.data.message === "Unable to authenticate the user.") {
           alert("Datos de inicio de sesión incorrectos");
+        } else if (err.response.data.message === "User not found.") {
+          alert("El usuario no se ha encontrado");
         }
       });
   };
@@ -102,7 +104,7 @@ export default function LoginForm() {
           className="block w-3/4 rounded-full px-3 py-1 bg-transparent border border-white placeholder:text-white placeholder:opacity-50 focus:outline-none"
         />
         {errorMessages.email && (
-          <p className="text-red-500">{errorMessages.email}</p>
+          <p className="text-white-500">{errorMessages.email}</p>
         )}
       </fieldset>
 
@@ -118,10 +120,17 @@ export default function LoginForm() {
           value={loginData.password}
           onChange={handleOnChange}
           placeholder="Escribe tu contraseña"
+          required
+          pattern="^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$"
+          onInvalid={(e: React.InvalidEvent<HTMLInputElement>) => {
+            e.currentTarget.setCustomValidity(
+              "La contraseña debe tener al menos 8 caracteres, un número y un caracter especial"
+            );
+          }}
           className="block w-3/4 rounded-full px-3 py-1 bg-transparent border border-white placeholder:text-white placeholder:opacity-50"
         />
         {errorMessages.password && (
-          <p className="text-red-500">{errorMessages.password}</p>
+          <p className="text-white-500">{errorMessages.password}</p>
         )}
       </fieldset>
 
