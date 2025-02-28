@@ -25,7 +25,7 @@ export default function RestaurantCard({
 
   return (
     <Link href={`/restaurants/${_id}`}>
-      <div className="flex flex-row sm:h-48 opacity-50 sm:hover:opacity-100 sm:transition-opacity sm:duration-300 sm:hover:cursor-pointer">
+      <div className="flex flex-row sm:h-48 sm:opacity-80 sm:hover:opacity-100 sm:transition-opacity sm:duration-300 sm:hover:cursor-pointer">
         <RestaurantImage
           src={image || "/images/hero.jpeg"}
           width="w-2/5 md:w-1/4 lg:w-2/5 xl:w-1/4"

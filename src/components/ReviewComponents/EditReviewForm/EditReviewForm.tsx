@@ -51,13 +51,13 @@ export default function EditReviewForm({
   return (
     <form
       onSubmit={(e) => handleSubmit(e)}
-      className="grid grid-cols-10 items-center border-b border-[var(--tailor-blue)] p-5"
+      className="sm:grid sm:grid-cols-10 sm:items-center border-b border-[var(--tailor-blue)] p-5"
     >
-      <p className="font-bold text-xl">{formData.name}</p>
-      <div className="col-span-9 pl-5">
-        <div className="w-full flex flex-col items-end mb-3">
+      <p className="font-bold text-xl mb-2">{formData.name}</p>
+      <div className="col-span-9 sm:pl-5">
+        <div className="w-full sm:flex sm:flex-col sm:items-end mb-3">
           <p className="text-xs">{formData.date}</p>
-          <div className="flex flex-row justify-end">
+          <div className="flex flex-row">
             {Array.from({ length: 5 }).map((_, index) => (
               <Star
                 key={`star-${index}`}
@@ -77,7 +77,7 @@ export default function EditReviewForm({
           value={formData.comments}
           onChange={handleChange}
           placeholder="Escribe tu comentario sobre el restaurante"
-          className="text-sm text-justify w-full resize-none focus:outline-none"
+          className="text-xs sm:text-sm text-justify w-full resize-none focus:outline-none"
         />
       </div>
       <div className="col-span-10 flex justify-end items-end gap-3">
