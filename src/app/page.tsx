@@ -10,9 +10,13 @@ export default function Home() {
           <Logo />
         </div>
         <p>Hola,</p>
+        <p>
+          Bienvenido de nuevo a mi prueba para Tailor Hub (esto parece un dejá
+          vu).
+        </p>
         <p className="mb-10">
-          Bienvenido a mi prueba para Tailor hub. Aquí podréis ver mis
-          restaurantes favoritos a los que podríais llevarme en el onboarding.
+          A ver si esta vez sí que consigo convenceros de que soy la persona que
+          estábais buscando ;)
         </p>
         <Link href="/login">
           <button className="px-6 py-2 rounded-2xl border border-black font-bold hover:bg-black hover:text-white transition-all duration-300">
