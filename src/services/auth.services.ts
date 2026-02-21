@@ -1,16 +1,19 @@
 import { http } from "@/services/http.services";
 import { LoginData, SignupData } from "@/interfaces/Auth.interface";
+import { User } from "@/interfaces/User.interface";
 
 class AuthServices {
-  signupUser(userData: SignupData) {
+  signupUser(
+    userData: SignupData,
+  ): Promise<{ data: { loggedUserData: User } }> {
     return http.post("/backend/signup", userData);
   }
 
-  loginUser(userData: LoginData) {
+  loginUser(userData: LoginData): Promise<{ data: { loggedUserData: User } }> {
     return http.post("/auth/login", userData);
   }
 
-  verifyUser() {
+  verifyUser(): Promise<{ data: { loggedUserData: User } }> {
     return http.get("/auth/verify");
   }
 

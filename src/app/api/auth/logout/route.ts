@@ -2,8 +2,9 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { SESSION_COOKIE } from "@/server/auth/session";
 
-export async function POST() {
+export async function POST(req: Request) {
   const cookieStore = await cookies();
   cookieStore.delete(SESSION_COOKIE);
-  return NextResponse.json({ ok: true });
+
+  return NextResponse.redirect(new URL("/", req.url), { status: 303 });
 }

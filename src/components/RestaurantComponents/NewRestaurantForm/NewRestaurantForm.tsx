@@ -3,7 +3,6 @@
 import { useState, useRef, useContext } from "react";
 import { useRouter } from "next/navigation";
 
-import { AuthContext } from "@/context/auth.context";
 import { Restaurant } from "@/interfaces/Restaurant.interface";
 import { GogleMapsApiProvider } from "@/providers/GogleMapsApiProvider";
 
@@ -14,11 +13,13 @@ import Spinner from "@/components/Spinner/Spinner";
 import RestaurantImage from "@/components/RestaurantComponents/RestaurantImage/RestaurantImage";
 import AutocompleteAddress from "@/components/GoogleMapsAPI/AutocompleteAddress/AutocompleteAddress";
 
-export default function NewRestaurantForm() {
+export default function NewRestaurantForm({
+  loggedUserId,
+}: {
+  loggedUserId: string;
+}) {
   const router = useRouter();
   const imageFileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const { loggedUser } = useContext(AuthContext);
 
   const [formData, setFormData] = useState<Restaurant>({
     name: "",
@@ -41,7 +42,7 @@ export default function NewRestaurantForm() {
       Sunday: "-",
     },
     reviews: [],
-    createdBy: loggedUser?.id || "",
+    createdBy: loggedUserId || "",
   });
 
   const [isImageLoading, setIsImageLoading] = useState(false);
@@ -151,7 +152,7 @@ export default function NewRestaurantForm() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     RestaurantClientServices.createRestaurant(formData)
       .then((response) => {

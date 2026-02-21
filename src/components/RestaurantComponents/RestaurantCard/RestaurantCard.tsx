@@ -1,5 +1,3 @@
-"use client";
-
 import Stars from "../../Stars/Stars";
 import RestaurantImage from "../RestaurantImage/RestaurantImage";
 import RestaurantCuisineType from "../RestaurantCuisineType/RestaurantCuisineType";
@@ -27,7 +25,7 @@ export default function RestaurantCard({
     <Link href={`/restaurants/${_id}`}>
       <div className="flex flex-row sm:h-48 sm:opacity-80 sm:hover:opacity-100 sm:transition-opacity sm:duration-300 sm:hover:cursor-pointer">
         <RestaurantImage
-          src={image || "/images/hero.jpeg"}
+          src={image!}
           width="w-2/5 md:w-1/4 lg:w-2/5 xl:w-1/4"
           isCard={true}
         />
@@ -61,7 +59,7 @@ export default function RestaurantCard({
           <div className="flex flex-row gap-2 items-center">
             <Stars
               ratings={reviews?.map(
-                (review: { rating: number }) => review.rating
+                (review: { rating: number }) => review.rating,
               )}
             />
             <span>{`(${reviews?.length} comentarios)`}</span>

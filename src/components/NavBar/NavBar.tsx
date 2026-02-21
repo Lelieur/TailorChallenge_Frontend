@@ -1,20 +1,20 @@
 "use client";
 
 import { ArrowDownIcon } from "@heroicons/react/16/solid";
-import { useState, useEffect, useRef, useContext } from "react";
-import { AuthContext } from "@/context/auth.context";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, useRef } from "react";
 
 import Link from "next/link";
+import { User } from "@/interfaces/User.interface";
 
-export default function NavBar(): React.ReactNode {
+export default function NavBar({
+  loggedUser,
+}: {
+  loggedUser: User;
+}): React.ReactNode {
   const ref = useRef<HTMLDivElement>(null);
-  const router = useRouter();
 
   const [showMenu, setShowMenu] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
-
-  const { loggedUser, logoutUser } = useContext(AuthContext);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -78,16 +78,14 @@ export default function NavBar(): React.ReactNode {
           <Link href="/restaurants" onClick={() => setShowMenu(false)}>
             <p className="m-0">Restaurantes</p>
           </Link>
-          <button
-            className="bg-white text-black font-bold px-4 py-2 rounded-full w-full"
-            onClick={() => {
-              logoutUser();
-              setShowMenu(false);
-              router.push("/");
-            }}
-          >
-            Salir
-          </button>
+          <form action="/api/auth/logout" method="post">
+            <button
+              type="submit"
+              className="bg-white text-black font-bold px-4 py-2 rounded-full w-full"
+            >
+              Salir
+            </button>
+          </form>
         </div>
       )}
     </nav>

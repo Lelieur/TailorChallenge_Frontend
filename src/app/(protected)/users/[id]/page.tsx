@@ -1,29 +1,20 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import React from "react";
 import { User } from "@/interfaces/User.interface";
 
-import UserServices from "@/services/user.services";
 import ReviewCard from "@/components/ReviewComponents/ReviewCard/ReviewCard";
 import RestaurantCard from "@/components/RestaurantComponents/RestaurantCard/RestaurantCard";
 import { Restaurant } from "@/interfaces/Restaurant.interface";
 import { Review } from "@/interfaces/Review.inteface";
+import { getUserById } from "@/services/user.server.services";
 
-export default function UserPage(): React.ReactNode {
-  const { id } = useParams();
-  const [userData, setUserData] = useState<User>({});
-
+export default async function UserPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<React.ReactNode> {
+  const { id } = await params;
+  const userData: User = await getUserById(id);
   const { username, email, favoriteRestaurants, reviews } = userData;
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data: userData } = await UserServices.getUserById(id as string);
-      setUserData(userData);
-    };
-
-    fetchData();
-  }, [id]);
 
   return (
     <main className="lg:overflow-y-hidden">
@@ -56,7 +47,11 @@ export default function UserPage(): React.ReactNode {
           <hr className="border-[var(--tailor-blue)]" />
           <div className="lg:overflow-y-scroll lg:h-full">
             {reviews?.map((review, index) => (
-              <ReviewCard key={index} review={review as Review} />
+              <ReviewCard
+                key={index}
+                review={review as Review}
+                currentUserId={id}
+              />
             ))}
           </div>
         </div>

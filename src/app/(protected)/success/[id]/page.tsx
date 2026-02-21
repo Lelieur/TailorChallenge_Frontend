@@ -1,11 +1,12 @@
-"use client";
-
 import Link from "next/link";
 import Icono from "@/assets/icono.svg";
-import { useParams } from "next/navigation";
 
-export default function Success(): React.ReactNode {
-  const { id } = useParams();
+export default async function Success({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<React.ReactNode> {
+  const { id } = await params;
   return (
     <div className="m-auto flex flex-col items-center justify-between h-1/4">
       <Icono />

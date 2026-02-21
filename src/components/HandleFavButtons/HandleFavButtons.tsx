@@ -1,18 +1,19 @@
 "use client";
 
-import { AuthContext } from "@/context/auth.context";
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
-import UserServices from "@/services/user.services";
+import UserServices from "@/services/user.client.services";
+import { User } from "@/interfaces/User.interface";
 
 export default function HandleFavButtons({
-  id: restaurantId,
+  restaurantId: restaurantId,
+  loggedUser,
   isMobile,
 }: {
-  id: string;
+  restaurantId: string;
+  loggedUser: User;
   isMobile?: boolean;
 }) {
-  const { loggedUser } = useContext(AuthContext);
   const [updatedLoggedUser, setUpdatedLoggedUser] = useState(loggedUser);
 
   useEffect(() => {
@@ -46,7 +47,7 @@ export default function HandleFavButtons({
           setUpdatedLoggedUser({
             ...loggedUser,
             favoriteRestaurants: updatedLoggedUser?.favoriteRestaurants?.filter(
-              (id) => id !== restaurantId
+              (id) => id !== restaurantId,
             ),
           });
         })
@@ -66,7 +67,7 @@ export default function HandleFavButtons({
         }`}
         onClick={handleAddFavoriteRestaurant}
         disabled={updatedLoggedUser?.favoriteRestaurants?.includes(
-          restaurantId
+          restaurantId,
         )}
       >
         {isMobile ? "Añadir" : "Añadir a favoritos"}

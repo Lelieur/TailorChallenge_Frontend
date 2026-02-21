@@ -1,30 +1,31 @@
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { redirect } from "next/navigation";
 import { SESSION_COOKIE, sessionCookieOptions } from "@/server/auth/session";
 
 export async function POST(req: Request) {
-  const credentials = await req.json();
+  const form = await req.formData();
+  const email = String(form.get("email") ?? "");
+  const password = String(form.get("password") ?? "");
 
   const upstream = await fetch(`${process.env.API_URL}/api/login`, {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify(credentials),
+    body: JSON.stringify({ email, password }),
     cache: "no-store",
   });
 
   const data = await upstream.json().catch(() => null);
 
   if (!upstream.ok) {
-    return NextResponse.json(
-      { message: data?.message ?? "Login failed" },
-      { status: upstream.status },
-    );
+    const message = encodeURIComponent(data?.message ?? "Login failed");
+    redirect(`/login?error=${message}`);
   }
 
-  const { authToken, userData } = data;
+  const authToken = data?.authToken;
+  if (!authToken)
+    redirect(`/login?error=${encodeURIComponent("Login failed")}`);
 
-  const cookieStore = await cookies();
-  cookieStore.set(SESSION_COOKIE, authToken, sessionCookieOptions);
+  (await cookies()).set(SESSION_COOKIE, authToken, sessionCookieOptions);
 
-  return NextResponse.json({ userData }, { status: 200 });
+  redirect("/restaurants");
 }

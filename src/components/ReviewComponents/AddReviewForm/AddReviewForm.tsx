@@ -1,20 +1,23 @@
 "use client";
 
-import { useState, useContext } from "react";
-import { useParams } from "next/navigation";
-import { AuthContext } from "@/context/auth.context";
+import { useState } from "react";
 
 import Star from "@/assets/star.svg";
-import ReviewServices from "@/services/review.services";
+import ReviewServices from "@/services/review.client.services";
 
 import { useRouter } from "next/navigation";
 
 import { Review } from "@/interfaces/Review.inteface";
+import { User } from "@/interfaces/User.interface";
 
-export default function AddReviewForm() {
+export default function AddReviewForm({
+  loggedUser,
+  restaurantId,
+}: {
+  loggedUser: User | null;
+  restaurantId: string;
+}) {
   const router = useRouter();
-  const { id } = useParams();
-  const { loggedUser } = useContext(AuthContext);
 
   const [formData, setFormData] = useState<Review>({
     rating: 0,
@@ -26,11 +29,11 @@ export default function AddReviewForm() {
     }),
     comments: "",
     authorId: loggedUser?.id || "",
-    restaurantId: (id as string) || "",
+    restaurantId: (restaurantId as string) || "",
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
   ) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -40,17 +43,21 @@ export default function AddReviewForm() {
     setFormData({ ...formData, ["rating"]: rating });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     ReviewServices.createReview(formData)
       .then(() => {
         setFormData({
           rating: 0,
-          name: "",
-          date: "",
+          name: loggedUser?.username || "",
+          date: new Date().toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
           comments: "",
-          authorId: "",
-          restaurantId: "",
+          authorId: loggedUser?.id || "",
+          restaurantId: (restaurantId as string) || "",
         });
       })
       .then(() => {

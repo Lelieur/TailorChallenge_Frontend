@@ -5,14 +5,16 @@ import AddReviewForm from "@/components/ReviewComponents/AddReviewForm/AddReview
 import HandleFavButtons from "@/components/HandleFavButtons/HandleFavButtons";
 import RestaurantImage from "@/components/RestaurantComponents/RestaurantImage/RestaurantImage";
 import { getRestaurantById } from "@/services/restaurant.server.services";
+import { getCurrentUser } from "@/app/api/auth/dal";
 
 export default async function RestaurantPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ restaurantId: string }>;
 }) {
-  const { id } = await params;
-  const restaurant = await getRestaurantById(id);
+  const { restaurantId } = await params;
+  const restaurant = await getRestaurantById(restaurantId);
+  const loggedUser = await getCurrentUser();
 
   const {
     name,
@@ -36,7 +38,11 @@ export default async function RestaurantPage({
           <h2 className="font-bold text-xl sm:text-4xl mb-3">{name}</h2>
           <p className="hidden sm:block">{address}</p>
           <div className="mt-5">
-            <HandleFavButtons id={id} isMobile={true} />
+            <HandleFavButtons
+              restaurantId={restaurantId}
+              isMobile={true}
+              loggedUser={loggedUser!}
+            />
           </div>
         </div>
       </div>
@@ -69,7 +75,10 @@ export default async function RestaurantPage({
             </div>
           </div>
           <div className="mt-5 lg:mt-0 lg:col-span-4 xl:col-span-3 border border-black rounded-lg">
-            <AddReviewForm />
+            <AddReviewForm
+              loggedUser={loggedUser}
+              restaurantId={restaurantId}
+            />
           </div>
         </div>
         <div className="xl:grid xl:grid-cols-10 text-left">
