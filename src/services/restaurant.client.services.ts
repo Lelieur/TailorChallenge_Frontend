@@ -1,31 +1,13 @@
-"use client";
+import { http } from "@/services/http.services";
+import type { Restaurant } from "@/interfaces/Restaurant.interface";
 
-import axios, { AxiosInstance } from "axios";
-import { Restaurant } from "@/interfaces/Restaurant.interface";
-
-class RestaurantClientServices {
-  private axiosApp: AxiosInstance;
-
-  constructor() {
-    this.axiosApp = axios.create({
-      baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api`,
-    });
-
-    this.axiosApp.interceptors.request.use((config) => {
-      const storedToken = localStorage.getItem("authToken");
-
-      if (storedToken) {
-        config.headers.set("Authorization", `Bearer ${storedToken}`);
-      }
-
-      return config;
-    });
+class RestaurantsClientServices {
+  getAllRestaurants() {
+    return http.get("/backend/restaurants");
   }
-
-  createRestaurant(restaurant: Restaurant) {
-    return this.axiosApp.post("/restaurants", restaurant);
+  createRestaurant(payload: Restaurant) {
+    return http.post("/backend/restaurants", payload);
   }
 }
 
-const restaurantClientServicesInstance = new RestaurantClientServices();
-export default restaurantClientServicesInstance;
+export default new RestaurantsClientServices();

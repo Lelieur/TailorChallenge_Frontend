@@ -1,10 +1,10 @@
-import RestaurantServices from "@/services/restaurant.services";
 import ReviewsList from "@/components/ReviewComponents/ReviewsList/ReviewsLists";
 import RestaurantCuisineType from "@/components/RestaurantComponents/RestaurantCuisineType/RestaurantCuisineType";
 import RestaurantOperatingHours from "@/components/RestaurantComponents/RestaurantOperatingHours/RestaurantOperatingHours";
 import AddReviewForm from "@/components/ReviewComponents/AddReviewForm/AddReviewForm";
 import HandleFavButtons from "@/components/HandleFavButtons/HandleFavButtons";
 import RestaurantImage from "@/components/RestaurantComponents/RestaurantImage/RestaurantImage";
+import { getRestaurantById } from "@/services/restaurant.server.services";
 
 export default async function RestaurantPage({
   params,
@@ -12,7 +12,8 @@ export default async function RestaurantPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const { data: restaurant } = await RestaurantServices.getRestaurantById(id);
+  const restaurant = await getRestaurantById(id);
+
   const {
     name,
     address,

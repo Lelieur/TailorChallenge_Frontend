@@ -50,7 +50,7 @@ export default function NewRestaurantForm() {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement
-    >
+    >,
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -117,7 +117,7 @@ export default function NewRestaurantForm() {
     setStaticOpenHours(
       value < "13"
         ? value + " am"
-        : (Number(value.slice(0, 2)) - 12).toString() + value.slice(2) + " pm"
+        : (Number(value.slice(0, 2)) - 12).toString() + value.slice(2) + " pm",
     );
   };
 
@@ -153,7 +153,6 @@ export default function NewRestaurantForm() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
     RestaurantClientServices.createRestaurant(formData)
       .then((response) => {
         router.push(`/success/${response.data._id}`);

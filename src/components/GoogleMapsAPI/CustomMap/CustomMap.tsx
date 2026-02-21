@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState, useRef } from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import { Restaurant } from "@/interfaces/Restaurant.interface";
 import darkMapStyle from "@/styles/darkMapStyle";
-import RestaurantServices from "@/services/restaurant.services";
+import RestaurantServices from "@/services/restaurant.client.services";
 
 interface MarkerType {
   lat: number;
@@ -26,7 +26,7 @@ export default function CustomMap() {
         const { data: restaurants } =
           await RestaurantServices.getAllRestaurants();
         const markersData = restaurants.map(
-          (restaurant: Restaurant) => restaurant.latlng
+          (restaurant: Restaurant) => restaurant.latlng,
         );
         setMarkers(markersData);
       } catch (error) {

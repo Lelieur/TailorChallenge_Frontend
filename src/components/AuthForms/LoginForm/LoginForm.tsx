@@ -52,27 +52,25 @@ export default function LoginForm() {
     }
   };
 
-  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleOnSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    AuthServices.loginUser(loginData)
-      .then(({ data }) => {
-        const { authToken, userData } = data;
-
-        localStorage.setItem("authToken", authToken);
-        localStorage.setItem("userData", userData);
-
-        authenticateUser();
-      })
-      .then(() => router.push("/restaurants"))
-      .catch((err) => {
-        console.log(err);
-        if (err.response.data.message === "Unable to authenticate the user.") {
+    try {
+      await AuthServices.loginUser(loginData);
+      await authenticateUser();
+      router.push("/restaurants");
+    } catch (error) {
+      if (error instanceof Error) {
+        const msg = error.message as string;
+        if (msg === "Unable to authenticate the user.")
           alert("Datos de inicio de sesión incorrectos");
-        } else if (err.response.data.message === "User not found") {
+        else if (msg === "User not found")
           alert("El usuario no se ha encontrado");
-        }
-      });
+        else alert("Error al iniciar sesión");
+      } else {
+        alert(error);
+      }
+    }
   };
 
   return (
@@ -98,7 +96,7 @@ export default function LoginForm() {
           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
           onInvalid={(e: React.InvalidEvent<HTMLInputElement>) => {
             e.currentTarget.setCustomValidity(
-              "Por favor, introduce un email válido"
+              "Por favor, introduce un email válido",
             );
           }}
           className="mt-2 sm:mt-0 block w-3/4 rounded-full px-3 py-1 bg-transparent border border-white placeholder:text-white placeholder:opacity-50 focus:outline-none"
@@ -124,7 +122,7 @@ export default function LoginForm() {
           pattern="^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$"
           onInvalid={(e: React.InvalidEvent<HTMLInputElement>) => {
             e.currentTarget.setCustomValidity(
-              "La contraseña debe tener al menos 8 caracteres, un número y un caracter especial"
+              "La contraseña debe tener al menos 8 caracteres, un número y un caracter especial",
             );
           }}
           className="mt-2 sm:mt-0 block w-3/4 rounded-full px-3 py-1 bg-transparent border border-white placeholder:text-white placeholder:opacity-50"
