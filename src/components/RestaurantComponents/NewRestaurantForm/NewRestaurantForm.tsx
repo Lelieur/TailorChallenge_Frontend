@@ -1,48 +1,48 @@
-'use client';
+"use client";
 
-import { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 
-import { Restaurant } from '@/interfaces/Restaurant.interface';
+import { Restaurant } from "@/interfaces/Restaurant.interface";
 
-import UploadServices from '@/services/cloudinary.services';
-import RestaurantClientServices from '@/services/restaurant.client.services';
+import UploadServices from "@/services/cloudinary.services";
+import RestaurantClientServices from "@/services/restaurant.client.services";
 
-import Spinner from '@/components/Spinner/Spinner';
-import RestaurantImage from '@/components/RestaurantComponents/RestaurantImage/RestaurantImage';
-import { MapboxSelection } from '@/lib/mapbox/types';
-import AutocompleteAddress from '@/components/Mapbox/Search/AutocompleteAddress';
+import Spinner from "@/components/Spinner/Spinner";
+import RestaurantImage from "@/components/RestaurantComponents/RestaurantImage/RestaurantImage";
+import { MapboxSelection } from "@/lib/mapbox/types";
+import AutocompleteAddress from "@/components/Mapbox/Search/AutocompleteAddress";
 
 export default function NewRestaurantForm({ loggedUserId }: { loggedUserId: string }) {
   const router = useRouter();
   const imageFileInputRef = useRef<HTMLInputElement | null>(null);
 
   const [formData, setFormData] = useState<Restaurant>({
-    name: '',
-    neighborhood: '',
-    address: '',
-    image: '',
-    description: '',
-    cuisine_type: '',
+    name: "",
+    neighborhood: "",
+    address: "",
+    image: "",
+    description: "",
+    cuisine_type: "",
     latlng: {
       lat: 0,
       lng: 0,
     },
     operating_hours: {
-      Monday: '-',
-      Tuesday: '-',
-      Wednesday: '-',
-      Thursday: '-',
-      Friday: '-',
-      Saturday: '-',
-      Sunday: '-',
+      Monday: "-",
+      Tuesday: "-",
+      Wednesday: "-",
+      Thursday: "-",
+      Friday: "-",
+      Saturday: "-",
+      Sunday: "-",
     },
     reviews: [],
-    createdBy: loggedUserId || '',
+    createdBy: loggedUserId || "",
   });
 
   const [isImageLoading, setIsImageLoading] = useState(false);
-  const [staticOpenHours, setStaticOpenHours] = useState<string>('');
+  const [staticOpenHours, setStaticOpenHours] = useState<string>("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>,
@@ -60,7 +60,7 @@ export default function NewRestaurantForm({ loggedUserId }: { loggedUserId: stri
   };
 
   const handleNeighborhoodChanged = (sel: MapboxSelection) => {
-    const neighborhood = sel.label.split(',')[0]?.trim() ?? '';
+    const neighborhood = sel.label.split(",")[0]?.trim() ?? "";
     setFormData((prev) => ({ ...prev, neighborhood }));
   };
 
@@ -77,11 +77,11 @@ export default function NewRestaurantForm({ loggedUserId }: { loggedUserId: stri
 
         setFormData({
           ...formData,
-          ['image']: imageUrl,
+          ["image"]: imageUrl,
         });
         setIsImageLoading(false);
       } catch (error) {
-        console.error('Error subiendo la imagen:', error);
+        console.error("Error subiendo la imagen:", error);
       }
     }
   };
@@ -89,34 +89,34 @@ export default function NewRestaurantForm({ loggedUserId }: { loggedUserId: stri
   const handleOpenHoursChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    const day: keyof Restaurant['operating_hours'] = name as keyof Restaurant['operating_hours'];
+    const day: keyof Restaurant["operating_hours"] = name as keyof Restaurant["operating_hours"];
 
     setFormData({
       ...formData,
-      ['operating_hours']: {
+      ["operating_hours"]: {
         ...formData.operating_hours,
         [day]:
-          value < '13'
-            ? value + ' am'
-            : (Number(value.slice(0, 2)) - 12).toString() + value.slice(2) + ' pm',
+          value < "13"
+            ? value + " am"
+            : (Number(value.slice(0, 2)) - 12).toString() + value.slice(2) + " pm",
       },
     });
 
     setStaticOpenHours(
-      value < '13'
-        ? value + ' am'
-        : (Number(value.slice(0, 2)) - 12).toString() + value.slice(2) + ' pm',
+      value < "13"
+        ? value + " am"
+        : (Number(value.slice(0, 2)) - 12).toString() + value.slice(2) + " pm",
     );
   };
 
   const handleCloseHoursChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    const day: keyof Restaurant['operating_hours'] = name as keyof Restaurant['operating_hours'];
+    const day: keyof Restaurant["operating_hours"] = name as keyof Restaurant["operating_hours"];
 
     setFormData({
       ...formData,
-      ['operating_hours']: {
+      ["operating_hours"]: {
         ...formData.operating_hours,
         [day]: formData.operating_hours && staticOpenHours,
       },
@@ -124,14 +124,14 @@ export default function NewRestaurantForm({ loggedUserId }: { loggedUserId: stri
 
     setFormData({
       ...formData,
-      ['operating_hours']: {
+      ["operating_hours"]: {
         ...formData.operating_hours,
         [day]:
           staticOpenHours +
-          ' - ' +
-          (value < '13'
-            ? value + ' am'
-            : (Number(value.slice(0, 2)) - 12).toString() + value.slice(2) + ' pm'),
+          " - " +
+          (value < "13"
+            ? value + " am"
+            : (Number(value.slice(0, 2)) - 12).toString() + value.slice(2) + " pm"),
       },
     });
   };
@@ -140,24 +140,24 @@ export default function NewRestaurantForm({ loggedUserId }: { loggedUserId: stri
     e.preventDefault();
     RestaurantClientServices.createRestaurant(formData)
       .then((response) => {
-        router.push(`/success/${response.data._id}`);
+        router.push(`/success/${response.data.id}`);
       })
       .catch((error) => {
-        console.error('Error creando el restaurante:', error);
+        console.error("Error creando el restaurante:", error);
       });
   };
 
   return (
     <form onSubmit={handleSubmit} className="m-auto w-full sm:w-3/4">
       <div className="grid grid-cols-2 gap-3">
-        {formData.image === '' ? (
+        {formData.image === "" ? (
           <div className="col-span-2 md:col-span-1">
             <button
               type="button"
               onClick={() => handleImageButtonClick()}
               className="aspect-square w-full rounded-xl border border-black bg-gray-200"
             >
-              {isImageLoading ? <Spinner /> : 'Añadir imagen'}
+              {isImageLoading ? <Spinner /> : "Añadir imagen"}
             </button>
             <input
               type="file"
@@ -173,10 +173,10 @@ export default function NewRestaurantForm({ loggedUserId }: { loggedUserId: stri
           </div>
         ) : (
           <div className="relative col-span-2 w-full md:col-span-1">
-            <RestaurantImage src={formData?.image || ''} width="w-full" />
+            <RestaurantImage src={formData?.image || ""} width="w-full" />
             <button
               type="button"
-              onClick={() => setFormData({ ...formData, ['image']: '' })}
+              onClick={() => setFormData({ ...formData, ["image"]: "" })}
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-xl border border-white px-5 py-1 text-white"
             >
               Eliminar
@@ -277,7 +277,7 @@ export default function NewRestaurantForm({ loggedUserId }: { loggedUserId: stri
         type="submit"
         className="mt-5 block w-full rounded-xl border border-black px-3 py-1 font-bold text-black"
       >
-        Guardar{' '}
+        Guardar{" "}
       </button>
     </form>
   );
