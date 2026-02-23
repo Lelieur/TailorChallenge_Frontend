@@ -1,5 +1,4 @@
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
 import { SESSION_COOKIE } from "@/server/auth/session";
 
 type Ctx = { params: Promise<{ path: string[] }> };

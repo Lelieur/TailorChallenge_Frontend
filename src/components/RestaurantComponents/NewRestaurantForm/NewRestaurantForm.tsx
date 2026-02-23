@@ -1,77 +1,67 @@
-"use client";
+'use client';
 
-import { useState, useRef, useContext } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 
-import { Restaurant } from "@/interfaces/Restaurant.interface";
-import { GogleMapsApiProvider } from "@/providers/GogleMapsApiProvider";
+import { Restaurant } from '@/interfaces/Restaurant.interface';
 
-import UploadServices from "@/services/cloudinary.services";
-import RestaurantClientServices from "@/services/restaurant.client.services";
+import UploadServices from '@/services/cloudinary.services';
+import RestaurantClientServices from '@/services/restaurant.client.services';
 
-import Spinner from "@/components/Spinner/Spinner";
-import RestaurantImage from "@/components/RestaurantComponents/RestaurantImage/RestaurantImage";
-import AutocompleteAddress from "@/components/GoogleMapsAPI/AutocompleteAddress/AutocompleteAddress";
+import Spinner from '@/components/Spinner/Spinner';
+import RestaurantImage from '@/components/RestaurantComponents/RestaurantImage/RestaurantImage';
+import { MapboxSelection } from '@/lib/mapbox/types';
+import AutocompleteAddress from '@/components/Mapbox/Search/AutocompleteAddress';
 
-export default function NewRestaurantForm({
-  loggedUserId,
-}: {
-  loggedUserId: string;
-}) {
+export default function NewRestaurantForm({ loggedUserId }: { loggedUserId: string }) {
   const router = useRouter();
   const imageFileInputRef = useRef<HTMLInputElement | null>(null);
 
   const [formData, setFormData] = useState<Restaurant>({
-    name: "",
-    neighborhood: "",
-    address: "",
-    image: "",
-    description: "",
-    cuisine_type: "",
+    name: '',
+    neighborhood: '',
+    address: '',
+    image: '',
+    description: '',
+    cuisine_type: '',
     latlng: {
       lat: 0,
       lng: 0,
     },
     operating_hours: {
-      Monday: "-",
-      Tuesday: "-",
-      Wednesday: "-",
-      Thursday: "-",
-      Friday: "-",
-      Saturday: "-",
-      Sunday: "-",
+      Monday: '-',
+      Tuesday: '-',
+      Wednesday: '-',
+      Thursday: '-',
+      Friday: '-',
+      Saturday: '-',
+      Sunday: '-',
     },
     reviews: [],
-    createdBy: loggedUserId || "",
+    createdBy: loggedUserId || '',
   });
 
   const [isImageLoading, setIsImageLoading] = useState(false);
-  const [staticOpenHours, setStaticOpenHours] = useState<string>("");
+  const [staticOpenHours, setStaticOpenHours] = useState<string>('');
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement
-    >,
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>,
   ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleAddressChanged = (place: google.maps.places.PlaceResult) => {
-    setFormData({
-      ...formData,
-      ["address"]: place.formatted_address,
-      ["latlng"]: {
-        lat: place.geometry?.location?.lat() || 0,
-        lng: place.geometry?.location?.lng() || 0,
-      },
-    });
+  const handleAddressChanged = (sel: MapboxSelection) => {
+    setFormData((prev) => ({
+      ...prev,
+      address: sel.label,
+      latlng: { lat: sel.lat, lng: sel.lng },
+    }));
   };
 
-  const handleNeighborhoodChanged = (place: google.maps.places.PlaceResult) => {
-    setFormData({
-      ...formData,
-      ["neighborhood"]: place.formatted_address?.split(",")[0] || "",
-    });
+  const handleNeighborhoodChanged = (sel: MapboxSelection) => {
+    const neighborhood = sel.label.split(',')[0]?.trim() ?? '';
+    setFormData((prev) => ({ ...prev, neighborhood }));
   };
 
   const handleImageButtonClick = () => {
@@ -87,11 +77,11 @@ export default function NewRestaurantForm({
 
         setFormData({
           ...formData,
-          ["image"]: imageUrl,
+          ['image']: imageUrl,
         });
         setIsImageLoading(false);
       } catch (error) {
-        console.error("Error subiendo la imagen:", error);
+        console.error('Error subiendo la imagen:', error);
       }
     }
   };
@@ -99,38 +89,34 @@ export default function NewRestaurantForm({
   const handleOpenHoursChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    const day: keyof Restaurant["operating_hours"] =
-      name as keyof Restaurant["operating_hours"];
+    const day: keyof Restaurant['operating_hours'] = name as keyof Restaurant['operating_hours'];
 
     setFormData({
       ...formData,
-      ["operating_hours"]: {
+      ['operating_hours']: {
         ...formData.operating_hours,
         [day]:
-          value < "13"
-            ? value + " am"
-            : (Number(value.slice(0, 2)) - 12).toString() +
-              value.slice(2) +
-              " pm",
+          value < '13'
+            ? value + ' am'
+            : (Number(value.slice(0, 2)) - 12).toString() + value.slice(2) + ' pm',
       },
     });
 
     setStaticOpenHours(
-      value < "13"
-        ? value + " am"
-        : (Number(value.slice(0, 2)) - 12).toString() + value.slice(2) + " pm",
+      value < '13'
+        ? value + ' am'
+        : (Number(value.slice(0, 2)) - 12).toString() + value.slice(2) + ' pm',
     );
   };
 
   const handleCloseHoursChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    const day: keyof Restaurant["operating_hours"] =
-      name as keyof Restaurant["operating_hours"];
+    const day: keyof Restaurant['operating_hours'] = name as keyof Restaurant['operating_hours'];
 
     setFormData({
       ...formData,
-      ["operating_hours"]: {
+      ['operating_hours']: {
         ...formData.operating_hours,
         [day]: formData.operating_hours && staticOpenHours,
       },
@@ -138,16 +124,14 @@ export default function NewRestaurantForm({
 
     setFormData({
       ...formData,
-      ["operating_hours"]: {
+      ['operating_hours']: {
         ...formData.operating_hours,
         [day]:
           staticOpenHours +
-          " - " +
-          (value < "13"
-            ? value + " am"
-            : (Number(value.slice(0, 2)) - 12).toString() +
-              value.slice(2) +
-              " pm"),
+          ' - ' +
+          (value < '13'
+            ? value + ' am'
+            : (Number(value.slice(0, 2)) - 12).toString() + value.slice(2) + ' pm'),
       },
     });
   };
@@ -159,21 +143,21 @@ export default function NewRestaurantForm({
         router.push(`/success/${response.data._id}`);
       })
       .catch((error) => {
-        console.error("Error creando el restaurante:", error);
+        console.error('Error creando el restaurante:', error);
       });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full sm:w-3/4 m-auto">
+    <form onSubmit={handleSubmit} className="m-auto w-full sm:w-3/4">
       <div className="grid grid-cols-2 gap-3">
-        {formData.image === "" ? (
+        {formData.image === '' ? (
           <div className="col-span-2 md:col-span-1">
             <button
               type="button"
               onClick={() => handleImageButtonClick()}
-              className="w-full bg-gray-200 rounded-xl aspect-square border border-black"
+              className="aspect-square w-full rounded-xl border border-black bg-gray-200"
             >
-              {isImageLoading ? <Spinner /> : "Añadir imagen"}
+              {isImageLoading ? <Spinner /> : 'Añadir imagen'}
             </button>
             <input
               type="file"
@@ -188,18 +172,18 @@ export default function NewRestaurantForm({
             />
           </div>
         ) : (
-          <div className="col-span-2 md:col-span-1 w-full relative">
-            <RestaurantImage src={formData?.image || ""} width="w-full" />
+          <div className="relative col-span-2 w-full md:col-span-1">
+            <RestaurantImage src={formData?.image || ''} width="w-full" />
             <button
               type="button"
-              onClick={() => setFormData({ ...formData, ["image"]: "" })}
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-white text-white rounded-xl px-5 py-1"
+              onClick={() => setFormData({ ...formData, ['image']: '' })}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-xl border border-white px-5 py-1 text-white"
             >
               Eliminar
             </button>
           </div>
         )}
-        <div className="col-span-2 md:col-span-1 flex flex-col gap-3">
+        <div className="col-span-2 flex flex-col gap-3 md:col-span-1">
           <div>
             <label htmlFor="name">Nombre del restaurante:</label>
             <input
@@ -214,25 +198,21 @@ export default function NewRestaurantForm({
           </div>
           <div>
             <label htmlFor="address">Dirección del restaurante:</label>
-            <GogleMapsApiProvider>
-              <AutocompleteAddress
-                handleAddressChanged={handleAddressChanged}
-                placeholder="Dirección"
-                id="address"
-              />
-            </GogleMapsApiProvider>
+            <AutocompleteAddress
+              onSelect={handleAddressChanged}
+              placeholder="Dirección"
+              id="address"
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label htmlFor="neighborhood">Barrio:</label>
-              <GogleMapsApiProvider>
-                <AutocompleteAddress
-                  handleAddressChanged={handleNeighborhoodChanged}
-                  placeholder="Barrio"
-                  id="neighborhood"
-                />
-              </GogleMapsApiProvider>
+              <AutocompleteAddress
+                onSelect={handleNeighborhoodChanged}
+                placeholder="Barrio"
+                id="neighborhood"
+              />
             </div>
             <div>
               <label htmlFor="cuisine_type">Tipo de cocina:</label>
@@ -259,7 +239,7 @@ export default function NewRestaurantForm({
               value={formData.description}
               onChange={handleChange}
               placeholder="Escribe información acerca del restaurante"
-              className="w-full resize-none focus:outline-none rounded-xl border border-black px-3 py-1"
+              className="w-full resize-none rounded-xl border border-black px-3 py-1 focus:outline-none"
             />
           </div>
         </div>
@@ -267,21 +247,18 @@ export default function NewRestaurantForm({
           <label htmlFor="operating_hours">Horarios de apertura:</label>
           {formData.operating_hours &&
             Object.keys(formData.operating_hours).map((day) => (
-              <div
-                key={day}
-                className="grid grid-cols-3 text-base items-center mb-2"
-              >
+              <div key={day} className="mb-2 grid grid-cols-3 items-center text-base">
                 <label htmlFor={day} className="col-span-1">
                   {day}:
                 </label>
-                <div className="col-span-2 flex border border-black rounded-xl px-3 py-1">
+                <div className="col-span-2 flex rounded-xl border border-black px-3 py-1">
                   <span>De:</span>
                   <input
                     type="time"
                     id={day}
                     name={day}
                     onChange={handleOpenHoursChange}
-                    className="text-center w-1/2 cursor-pointer focus:outline-none"
+                    className="w-1/2 cursor-pointer text-center focus:outline-none"
                   />
                   <span>a</span>
                   <input
@@ -289,7 +266,7 @@ export default function NewRestaurantForm({
                     id={day}
                     name={day}
                     onChange={handleCloseHoursChange}
-                    className="text-center w-1/2 cursor-pointer focus:outline-none"
+                    className="w-1/2 cursor-pointer text-center focus:outline-none"
                   />
                 </div>
               </div>
@@ -298,9 +275,9 @@ export default function NewRestaurantForm({
       </div>
       <button
         type="submit"
-        className="text-black font-bold border border-black px-3 py-1 rounded-xl mt-5 block w-full"
+        className="mt-5 block w-full rounded-xl border border-black px-3 py-1 font-bold text-black"
       >
-        Guardar{" "}
+        Guardar{' '}
       </button>
     </form>
   );

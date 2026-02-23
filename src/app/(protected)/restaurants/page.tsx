@@ -1,22 +1,25 @@
-import RestaurantsList from "@/components/RestaurantComponents/RestaurantsList/RestaurantsList";
-import CustomMap from "@/components/GoogleMapsAPI/CustomMap/CustomMap";
-import RestaurantsListSkeleton from "@/components/RestaurantComponents/RestaurantsList/RestaurantsListSkeleton";
+import RestaurantsList from '@/components/RestaurantComponents/RestaurantsList/RestaurantsList';
+import RestaurantsListSkeleton from '@/components/RestaurantComponents/RestaurantsList/RestaurantsListSkeleton';
 
-import { Suspense } from "react";
-import { GogleMapsApiProvider } from "@/providers/GogleMapsApiProvider";
-import { getAllRestaurants } from "@/services/restaurant.server.services";
+import { Suspense } from 'react';
+import { getAllRestaurants } from '@/services/restaurant.server.services';
+import { Restaurant } from '@/interfaces/Restaurant.interface';
+import CustomMap from '@/components/Mapbox/Map/CustomMap';
 
 export default async function Restaurants(): Promise<React.ReactNode> {
-  const restaurants = await getAllRestaurants();
+  const restaurants: Restaurant[] = await getAllRestaurants();
+
+  const markers = (restaurants as Restaurant[])
+    .map((r) => r.latlng)
+    .filter(Boolean)
+    .map((ll) => ({ lat: ll!.lat, lng: ll!.lng }));
 
   return (
-    <main className="flex-1 flex flex-col gap-4 sm:gap-7 lg:flex-row justify-between overflow-y-auto">
-      <div className="w-full h-full lg:w-1/2 rounded-xl overflow-hidden">
-        <GogleMapsApiProvider>
-          <CustomMap />
-        </GogleMapsApiProvider>
+    <main className="flex flex-1 flex-col justify-between gap-4 overflow-y-auto sm:gap-7 lg:flex-row">
+      <div className="h-full w-full overflow-hidden rounded-xl lg:w-1/2">
+        <CustomMap markers={markers} />
       </div>
-      <div className="w-full h-full lg:w-1/2 lg:pt-0 overflow-y-auto">
+      <div className="h-full w-full overflow-y-auto lg:w-1/2 lg:pt-0">
         <Suspense fallback={<RestaurantsListSkeleton />}>
           <RestaurantsList restaurants={restaurants} />
         </Suspense>
