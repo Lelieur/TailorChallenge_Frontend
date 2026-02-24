@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import Star from "@/assets/star.svg";
-import ReviewServices from "@/services/review.client.services";
+import ReviewServices from "@/services/client/review";
 
 import { useRouter } from "next/navigation";
 

@@ -1,5 +1,5 @@
 import NewRestaurantForm from "@/components/RestaurantComponents/NewRestaurantForm/NewRestaurantForm";
-import { getCurrentUserId } from "../../api/auth/dal";
+import { getCurrentUserId } from "@/server/auth/session";
 
 export default async function CreateRestaurant() {
   const loggedUserId = await getCurrentUserId();

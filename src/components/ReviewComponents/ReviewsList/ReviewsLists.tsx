@@ -1,4 +1,4 @@
-import { getCurrentUserId } from '@/app/api/auth/dal';
+import { getCurrentUserId } from "@/server/auth/session";
 import ReviewCard from '../ReviewCard/ReviewCard';
 import { Review } from '@/interfaces/Review.inteface';
 

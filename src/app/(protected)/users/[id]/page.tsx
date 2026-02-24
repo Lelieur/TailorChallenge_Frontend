@@ -5,7 +5,7 @@ import ReviewCard from "@/components/ReviewComponents/ReviewCard/ReviewCard";
 import RestaurantCard from "@/components/RestaurantComponents/RestaurantCard/RestaurantCard";
 import { Restaurant } from "@/interfaces/Restaurant.interface";
 import { Review } from "@/interfaces/Review.inteface";
-import { getUserById } from "@/services/user.server.services";
+import { getUserById } from "@/services/server/user";
 
 export default async function UserPage({
   params,

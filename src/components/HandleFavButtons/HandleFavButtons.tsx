@@ -2,17 +2,15 @@
 
 import { useState, useEffect } from "react";
 
-import UserServices from "@/services/user.client.services";
+import UserServices from "@/services/client/user";
 import { User } from "@/interfaces/User.interface";
 
 export default function HandleFavButtons({
   restaurantId: restaurantId,
   loggedUser,
-  isMobile,
 }: {
   restaurantId: string;
   loggedUser: User;
-  isMobile?: boolean;
 }) {
   const [updatedLoggedUser, setUpdatedLoggedUser] = useState(loggedUser);
 
@@ -24,13 +22,9 @@ export default function HandleFavButtons({
     if (loggedUser) {
       UserServices.addFavoriteRestaurant(restaurantId, loggedUser)
         .then(() => {
-          console.log("Restaurant added to favorites");
           setUpdatedLoggedUser({
             ...loggedUser,
-            favoriteRestaurants: [
-              ...(updatedLoggedUser?.favoriteRestaurants || []),
-              restaurantId,
-            ],
+            favoriteRestaurants: [...(updatedLoggedUser?.favoriteRestaurants || []), restaurantId],
           });
         })
         .catch((error) => {
@@ -43,7 +37,6 @@ export default function HandleFavButtons({
     if (loggedUser) {
       UserServices.removeFavoriteRestaurant(restaurantId, loggedUser)
         .then(() => {
-          console.log("Restaurant removed from favorites");
           setUpdatedLoggedUser({
             ...loggedUser,
             favoriteRestaurants: updatedLoggedUser?.favoriteRestaurants?.filter(
@@ -58,32 +51,28 @@ export default function HandleFavButtons({
   };
 
   return (
-    <div className="flex flex-row gap-2 justify-center">
+    <div className="flex flex-row justify-center gap-2">
       <button
-        className={`px-6 py-2 rounded-2xl font-bold  ${
+        className={`rounded-2xl px-6 py-2 font-bold ${
           updatedLoggedUser?.favoriteRestaurants?.includes(restaurantId)
-            ? "bg-[var(--tailor-grey)] text-gray-300 "
-            : "bg-[var(--tailor-blue)] text-white hover:bg-white hover:text-black transition-all duration-300"
+            ? "bg-[var(--tailor-grey)] text-gray-300"
+            : "bg-[var(--tailor-blue)] text-white transition-all duration-300 hover:bg-white hover:text-black"
         }`}
         onClick={handleAddFavoriteRestaurant}
-        disabled={updatedLoggedUser?.favoriteRestaurants?.includes(
-          restaurantId,
-        )}
+        disabled={loggedUser?.favoriteRestaurants?.includes(restaurantId)}
       >
-        {isMobile ? "Añadir" : "Añadir a favoritos"}
+        Añadir
       </button>
       <button
-        className={`px-6 py-2 rounded-2xl font-bold ${
+        className={`rounded-2xl px-6 py-2 font-bold ${
           !updatedLoggedUser?.favoriteRestaurants?.includes(restaurantId)
             ? "bg-[var(--tailor-grey)] text-gray-400"
-            : "bg-black text-white hover:bg-white hover:text-black transition-all duration-300"
+            : "bg-black text-white transition-all duration-300 hover:bg-white hover:text-black"
         }`}
         onClick={handleRemoveFavoriteRestaurant}
-        disabled={
-          !updatedLoggedUser?.favoriteRestaurants?.includes(restaurantId)
-        }
+        disabled={!loggedUser?.favoriteRestaurants?.includes(restaurantId)}
       >
-        {isMobile ? "Quitar" : "Añadir a favoritos"}
+        Quitar
       </button>
     </div>
   );

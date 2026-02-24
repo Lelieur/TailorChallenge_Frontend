@@ -2,7 +2,7 @@ import RestaurantsList from '@/components/RestaurantComponents/RestaurantsList/R
 import RestaurantsListSkeleton from '@/components/RestaurantComponents/RestaurantsList/RestaurantsListSkeleton';
 
 import { Suspense } from 'react';
-import { getAllRestaurants } from '@/services/restaurant.server.services';
+import { getAllRestaurants } from "@/services/server/restaurant";
 import { Restaurant } from '@/interfaces/Restaurant.interface';
 import CustomMap from '@/components/Mapbox/Map/CustomMap';
 

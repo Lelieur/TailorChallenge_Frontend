@@ -1,11 +1,11 @@
-import ReviewsList from '@/components/ReviewComponents/ReviewsList/ReviewsLists';
-import RestaurantCuisineType from '@/components/RestaurantComponents/RestaurantCuisineType/RestaurantCuisineType';
-import RestaurantOperatingHours from '@/components/RestaurantComponents/RestaurantOperatingHours/RestaurantOperatingHours';
-import AddReviewForm from '@/components/ReviewComponents/AddReviewForm/AddReviewForm';
-import HandleFavButtons from '@/components/HandleFavButtons/HandleFavButtons';
-import RestaurantImage from '@/components/RestaurantComponents/RestaurantImage/RestaurantImage';
-import { getRestaurantById } from '@/services/restaurant.server.services';
-import { getCurrentUser } from '@/app/api/auth/dal';
+import ReviewsList from "@/components/ReviewComponents/ReviewsList/ReviewsLists";
+import RestaurantCuisineType from "@/components/RestaurantComponents/RestaurantCuisineType/RestaurantCuisineType";
+import RestaurantOperatingHours from "@/components/RestaurantComponents/RestaurantOperatingHours/RestaurantOperatingHours";
+import AddReviewForm from "@/components/ReviewComponents/AddReviewForm/AddReviewForm";
+import HandleFavButtons from "@/components/HandleFavButtons/HandleFavButtons";
+import RestaurantImage from "@/components/RestaurantComponents/RestaurantImage/RestaurantImage";
+import { getRestaurantById } from "@/services/server/restaurant";
+import { getCurrentUser } from "@/server/use-cases/getCurrentUser";
 
 export default async function RestaurantPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -17,12 +17,12 @@ export default async function RestaurantPage({ params }: { params: Promise<{ id:
   return (
     <main className="flex flex-1 flex-col overflow-y-auto">
       <div className="relative h-1/2 w-full">
-        <RestaurantImage src={image || '/images/hero.jpeg'} width="w-full" height="h-full" />
+        <RestaurantImage src={image || "/images/hero.jpeg"} width="w-full" height="h-full" />
         <div className="absolute top-1/2 w-full translate-y-[-50%] text-center text-white">
           <h2 className="mb-3 text-xl font-bold sm:text-4xl">{name}</h2>
           <p className="hidden sm:block">{address}</p>
           <div className="mt-5">
-            <HandleFavButtons restaurantId={id} isMobile={true} loggedUser={loggedUser!} />
+            <HandleFavButtons restaurantId={id} loggedUser={loggedUser!} />
           </div>
         </div>
       </div>

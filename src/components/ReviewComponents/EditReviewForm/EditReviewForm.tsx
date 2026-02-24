@@ -1,7 +1,7 @@
 "use client";
 
 import Star from "@/assets/star.svg";
-import ReviewServices from "@/services/review.client.services";
+import ReviewServices from "@/services/client/review";
 import type { Review } from "@/interfaces/Review.inteface";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";

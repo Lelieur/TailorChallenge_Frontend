@@ -1,4 +1,4 @@
-import { http } from "@/services/http.services";
+import { http } from "@/services/http/client";
 import { Review } from "@/interfaces/Review.inteface";
 
 class ReviewClientServices {

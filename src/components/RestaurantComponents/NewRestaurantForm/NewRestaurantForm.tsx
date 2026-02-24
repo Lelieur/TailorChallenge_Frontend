@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Restaurant } from "@/interfaces/Restaurant.interface";
 
 import UploadServices from "@/services/cloudinary.services";
-import RestaurantClientServices from "@/services/restaurant.client.services";
+import RestaurantClientServices from "@/services/client/restaurant";
 
 import Spinner from "@/components/Spinner/Spinner";
 import RestaurantImage from "@/components/RestaurantComponents/RestaurantImage/RestaurantImage";
