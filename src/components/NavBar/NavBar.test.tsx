@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+﻿import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import NavBar from "./NavBar";
 
@@ -28,7 +28,7 @@ describe("NavBar", () => {
     await user.click(screen.getByText(/Lucas/i));
     expect(screen.getByText("Mi cuenta")).toBeInTheDocument();
 
-    fireEvent.click(document.body);
+    fireEvent.pointerDown(document.body);
     expect(screen.queryByText("Mi cuenta")).not.toBeInTheDocument();
   });
 });

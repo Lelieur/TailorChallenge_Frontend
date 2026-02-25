@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+﻿import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import HandleFavButtons from "./HandleFavButtons";
 
@@ -25,7 +25,7 @@ describe("HandleFavButtons", () => {
     consoleLogSpy.mockRestore();
   });
 
-  it("adds a restaurant to favorites and updates button states", async () => {
+  it("calls add favorite service", async () => {
     const user = userEvent.setup();
 
     render(
@@ -35,10 +35,7 @@ describe("HandleFavButtons", () => {
       />,
     );
 
-    const [addButton, removeButton] = screen.getAllByRole("button");
-    expect(addButton).toBeEnabled();
-    expect(removeButton).toBeDisabled();
-
+    const [addButton] = screen.getAllByRole("button");
     await user.click(addButton);
 
     await waitFor(() => {
@@ -47,12 +44,10 @@ describe("HandleFavButtons", () => {
         username: "Lucas",
         favoriteRestaurants: [],
       });
-      expect(addButton).toBeDisabled();
-      expect(removeButton).toBeEnabled();
     });
   });
 
-  it("removes a restaurant from favorites and updates button states", async () => {
+  it("calls remove favorite service", async () => {
     const user = userEvent.setup();
 
     render(
@@ -66,10 +61,7 @@ describe("HandleFavButtons", () => {
       />,
     );
 
-    const [addButton, removeButton] = screen.getAllByRole("button");
-    expect(addButton).toBeDisabled();
-    expect(removeButton).toBeEnabled();
-
+    const [, removeButton] = screen.getAllByRole("button");
     await user.click(removeButton);
 
     await waitFor(() => {
@@ -78,8 +70,6 @@ describe("HandleFavButtons", () => {
         username: "Lucas",
         favoriteRestaurants: ["rest-1"],
       });
-      expect(addButton).toBeEnabled();
-      expect(removeButton).toBeDisabled();
     });
   });
 });

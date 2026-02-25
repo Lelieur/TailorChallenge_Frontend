@@ -1,6 +1,8 @@
-import "@testing-library/jest-dom/vitest";
+﻿import "@testing-library/jest-dom/vitest";
 import React from "react";
 import { vi } from "vitest";
+
+vi.mock("server-only", () => ({}));
 
 vi.mock("next/link", () => ({
   default: ({
@@ -27,3 +29,21 @@ vi.mock("next/image", () => ({
     priority?: boolean;
   }) => <img {...props} />,
 }));
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    refresh: vi.fn(),
+  }),
+}));
+
+vi.mock("@/assets/star.svg", () => ({
+  default: (props: React.SVGProps<SVGSVGElement>) => <svg {...props} />,
+}));
+
+if (typeof HTMLFormElement !== "undefined" && !HTMLFormElement.prototype.requestSubmit) {
+  HTMLFormElement.prototype.requestSubmit = function requestSubmit() {
+    const event = new Event("submit", { bubbles: true, cancelable: true });
+    this.dispatchEvent(event);
+  };
+}
