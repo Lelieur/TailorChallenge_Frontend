@@ -1,14 +1,14 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
-
-import Star from "@/assets/star.svg";
-import ReviewServices from "@/services/client/review";
-
 import { useRouter } from "next/navigation";
 
-import { Review } from "@/interfaces/Review.inteface";
-import { User } from "@/interfaces/User.interface";
+import ReviewServices from "@/services/client/review";
+import type { Review } from "@/interfaces/Review.inteface";
+import type { User } from "@/interfaces/User.interface";
+import BasicButton from "@/components/Buttons/BasicButton";
+import DynamicStars from "@/components/Stars/DynamicStars/DynamicStars";
+import { handleSubmitWithToast } from "@/lib/handleWithToast";
 
 export default function AddReviewForm({
   loggedUser,
@@ -19,89 +19,64 @@ export default function AddReviewForm({
 }) {
   const router = useRouter();
 
-  const [formData, setFormData] = useState<Review>({
-    rating: 0,
-    name: loggedUser?.username || "",
-    date: new Date().toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }),
-    comments: "",
-    authorId: loggedUser?.id || "",
-    restaurantId: (restaurantId as string) || "",
-  });
+  const [rating, setRating] = useState(0);
+  const [comments, setComments] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const resetForm = () => {
+    setRating(0);
+    setComments("");
   };
 
-  const handleRatingChange = (rating: number) => {
-    setFormData({ ...formData, ["rating"]: rating });
-  };
+  const apiCall = async () => {
+    const payload: Review = {
+      rating,
+      name: loggedUser?.username || "",
+      date: new Date().toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
+      comments,
+      authorId: loggedUser?.id || "",
+      restaurantId: restaurantId || "",
+    };
 
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    ReviewServices.createReview(formData)
-      .then(() => {
-        setFormData({
-          rating: 0,
-          name: loggedUser?.username || "",
-          date: new Date().toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          }),
-          comments: "",
-          authorId: loggedUser?.id || "",
-          restaurantId: (restaurantId as string) || "",
-        });
-      })
-      .then(() => {
-        router.refresh();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    await ReviewServices.createReview(payload);
+    resetForm();
+    return "refresh";
   };
 
   return (
     <form
-      onSubmit={handleSubmit}
-      className="h-full p-3 flex flex-col justify-between"
+      onSubmit={(e) =>
+        handleSubmitWithToast({
+          event: e,
+          apiCall: apiCall,
+          isSubmitting: setIsSubmitting,
+          navigate: () => router.refresh(),
+          success: "¡Reseña publicada!",
+        })
+      }
+      className="flex h-full flex-col justify-between p-3"
     >
       <div>
-        <div className="flex flex-row">
-          {Array.from({ length: 5 }).map((_, index) => (
-            <Star
-              key={`star-${index}`}
-              onClick={() => handleRatingChange(index + 1)}
-              className={`cursor-pointer ${
-                formData.rating && formData.rating >= index + 1
-                  ? "opacity-100"
-                  : "opacity-50"
-              }`}
-            />
-          ))}
-        </div>
+        <DynamicStars rating={rating} setRating={setRating} isEditEnabled={true} />
         <textarea
           id="comments"
           name="comments"
-          value={formData.comments}
-          onChange={handleChange}
+          value={comments}
+          onChange={(e) => setComments(e.target.value)}
           placeholder="Escribe tu comentario sobre el restaurante"
-          className="test-sm sm:text-base w-full resize-none focus:outline-none"
+          className="test-sm w-full resize-none focus:outline-none sm:text-base"
         />
       </div>
-      <button
+      <BasicButton
         type="submit"
-        className="px-6 py-2 mt-10 mr-auto font-bold rounded-2xl border border-black text-black hover:bg-black hover:text-white transition-all duration-300"
-      >
-        Enviar
-      </button>
+        text={isSubmitting ? "Enviando..." : "Enviar"}
+        position="left"
+        disabled={isSubmitting}
+      />
     </form>
   );
 }

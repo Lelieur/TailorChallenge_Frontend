@@ -17,16 +17,10 @@ vi.mock("next/navigation", () => ({
   }),
 }));
 
-vi.mock("@/assets/star.svg", () => ({
-  default: ({
-    onClick,
-    className,
-  }: {
-    onClick?: () => void;
-    className?: string;
-  }) => (
-    <button type="button" data-testid="star-icon" onClick={onClick} className={className}>
-      star
+vi.mock("@/components/Stars/DynamicStars/DynamicStars", () => ({
+  default: ({ setRating }: { setRating: (value: number) => void }) => (
+    <button type="button" onClick={() => setRating(3)}>
+      set-rating
     </button>
   ),
 }));
@@ -47,8 +41,7 @@ describe("AddReviewForm", () => {
       />,
     );
 
-    const stars = screen.getAllByTestId("star-icon");
-    await user.click(stars[2]);
+    await user.click(screen.getByRole("button", { name: /set-rating/i }));
     await user.type(
       screen.getByPlaceholderText(/Escribe tu comentario sobre el restaurante/i),
       "Buen sitio",

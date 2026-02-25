@@ -1,176 +1,116 @@
 "use client";
 
-import Star from "@/assets/star.svg";
 import ReviewServices from "@/services/client/review";
 import type { Review } from "@/interfaces/Review.inteface";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import BasicButton from "@/components/Buttons/BasicButton";
+import DynamicStarts from "@/components/Stars/DynamicStars/DynamicStars";
+import { handleWithToast, handleSubmitWithToast } from "@/lib/handleWithToast";
 
-type ReviewFormValues = {
-  comments: string;
-  rating: number;
-};
-
-export default function EditReviewForm({
-  review,
-  canEdit,
-}: {
-  review: Review;
-  canEdit: boolean;
-}) {
+export default function EditReviewForm({ review, canEdit }: { review: Review; canEdit: boolean }) {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
   const [isEditEnabled, setIsEditEnabled] = useState(false);
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    reset,
-    formState: { isDirty },
-  } = useForm<ReviewFormValues>({
-    defaultValues: {
-      comments: review.comments ?? "",
-      rating: review.rating ?? 0,
-    },
-    mode: "onChange",
-  });
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [comments, setComments] = useState(review.comments ?? "");
+  const [rating, setRating] = useState(review.rating ?? 0);
 
   useEffect(() => {
-    reset({
-      comments: review.comments ?? "",
-      rating: review.rating ?? 0,
-    });
-  }, [review._id, review.comments, review.rating, reset]);
-
-  const rating = watch("rating");
-
-  const setRating = (value: number) => {
-    if (!isEditEnabled || isPending) return;
-    setValue("rating", value, { shouldDirty: true, shouldValidate: true });
-  };
-
-  const submit = handleSubmit(async (values) => {
-    if (!isEditEnabled || isPending) return;
-    if (!review._id) return;
-
-    try {
-      await ReviewServices.updateReview(review._id, {
-        ...review,
-        ...values,
-      });
-
-      router.refresh();
-    } catch (e) {
-      console.error(e);
-    }
+    setComments(review.comments ?? "");
+    setRating(review.rating ?? 0);
     setIsEditEnabled(false);
-  });
+  }, [review.id, review.comments, review.rating]);
 
-  const onDelete = async () => {
-    if (!review._id) return;
-    try {
-      await ReviewServices.deleteReview(review._id);
-      router.refresh();
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const cancel = () => {
-    reset({
-      comments: review.comments ?? "",
-      rating: review.rating ?? 0,
+  const updateReview = async () => {
+    await ReviewServices.updateReview(review.id!, {
+      ...review,
+      comments,
+      rating,
     });
     setIsEditEnabled(false);
+    return "refresh";
+  };
+
+  const deleteReview = async () => {
+    await ReviewServices.deleteReview(review.id!);
+    return "refresh";
+  };
+
+  const onCancel = () => {
+    setComments(review.comments ?? "");
+    setRating(review.rating ?? 0);
+    setIsEditEnabled(false);
+  };
+
+  const isDirty = comments !== (review.comments ?? "") || rating !== (review.rating ?? 0);
+
+  const handleRatingChange = (value: number) => {
+    if (!isEditEnabled) return;
+    setRating(value);
   };
 
   return (
     <form
-      onSubmit={submit}
-      className="sm:grid sm:grid-cols-10 sm:items-center border-b border-[var(--tailor-blue)] p-5"
+      onSubmit={(e) =>
+        handleSubmitWithToast({
+          event: e,
+          apiCall: updateReview,
+          success: "¡Reseña actualizada!",
+          navigate: () => router.refresh(),
+          isSubmitting: () => setIsEditEnabled(false),
+        })
+      }
+      className="border-b border-[var(--tailor-blue)] p-5 sm:grid sm:grid-cols-10 sm:items-center"
     >
-      <p className="font-bold text-xl mb-2">{review.name}</p>
+      <div className="col-span-10 ml-auto flex flex-col gap-1">
+        <DynamicStarts
+          rating={rating}
+          setRating={handleRatingChange}
+          isEditEnabled={isEditEnabled}
+        />
+        <p className="text-right text-xs">{review.date}</p>
+      </div>
+      <div className="col-span-10 mt-3 grid grid-cols-12">
+        <p className="col-span-2 text-xl leading-none font-bold">{review.name}</p>
 
-      <div className="col-span-9 sm:pl-5">
-        <div className="w-full sm:flex sm:flex-col sm:items-end mb-3">
-          <p className="text-xs">{review.date}</p>
-
-          <div className="flex flex-row gap-1">
-            {Array.from({ length: 5 }).map((_, index) => {
-              const value = index + 1;
-              const active = (rating ?? 0) >= value;
-
-              return (
-                <button
-                  key={`star-${value}`}
-                  type="button"
-                  onClick={() => setRating(value)}
-                  disabled={!isEditEnabled || isPending}
-                  aria-label={`Puntuar ${value} estrellas`}
-                  className={
-                    !isEditEnabled || isPending
-                      ? "cursor-default"
-                      : "cursor-pointer"
-                  }
-                >
-                  <Star className={active ? "opacity-100" : "opacity-50"} />
-                </button>
-              );
-            })}
-          </div>
+        <div className="col-span-10 sm:pl-5">
+          <fieldset disabled={!isEditEnabled}>
+            <textarea
+              value={comments}
+              onChange={(event) => setComments(event.target.value)}
+              placeholder="Escribe tu comentario sobre el restaurante"
+              className={`w-full resize-none text-justify text-xs leading-6 focus:outline-none sm:text-sm ${
+                !isEditEnabled ? "opacity-80" : ""
+              }`}
+            />
+          </fieldset>
         </div>
-
-        <fieldset disabled={!isEditEnabled || isPending}>
-          <textarea
-            {...register("comments")}
-            placeholder="Escribe tu comentario sobre el restaurante"
-            className={`text-xs sm:text-sm text-justify w-full resize-none focus:outline-none ${
-              !isEditEnabled ? "opacity-80" : ""
-            }`}
-          />
-        </fieldset>
       </div>
 
       {canEdit && (
-        <div className="col-span-10 flex justify-end items-end gap-3">
+        <div className="col-span-10 mr-0 ml-auto grid grid-cols-2 gap-2">
           {!isEditEnabled ? (
             <>
-              <button
+              <BasicButton type="button" text="Editar" action={() => setIsEditEnabled(true)} />
+              <BasicButton
                 type="button"
-                className="font-bold border border-black px-4 py-2 rounded-xl"
-                onClick={() => setIsEditEnabled(true)}
-              >
-                Editar
-              </button>
-              <button
-                type="button"
-                className="font-bold border border-black px-4 py-2 rounded-xl"
-                onClick={onDelete}
-              >
-                Eliminar
-              </button>
+                text={isDeleting ? "Eliminando..." : "Eliminar"}
+                action={() =>
+                  handleWithToast({
+                    action: deleteReview,
+                    data: review.id!.toString(),
+                    success: "¡Reseña eliminada!",
+                    navigate: () => router.refresh(),
+                    updateState: setIsDeleting,
+                  })
+                }
+                disabled={isDeleting}
+              />
             </>
           ) : (
             <>
-              <button
-                type="button"
-                className="font-bold border border-black px-4 py-2 rounded-xl"
-                onClick={cancel}
-                disabled={isPending}
-              >
-                Cancelar
-              </button>
-
-              <button
-                type="submit"
-                className="font-bold border border-black px-4 py-2 rounded-xl"
-                disabled={!isDirty || isPending}
-              >
-                {isPending ? "Guardando..." : "Guardar"}
-              </button>
+              <BasicButton type="button" text="Cancelar" action={onCancel} />
+              <BasicButton type="submit" text="Guardar" disabled={!isDirty} />
             </>
           )}
         </div>
