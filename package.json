@@ -1,6 +1,6 @@
 {
   "name": "tailorchallente_client",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev -p 5173",
@@ -24,14 +24,11 @@
   "dependencies": {
     "@heroicons/react": "2.2.0",
     "@mapbox/search-js-react": "^1.5.1",
-    "@wojtekmaj/react-timerange-picker": "6.0.0",
     "axios": "1.13.5",
-    "jose": "^6.1.3",
     "mapbox-gl": "^3.18.1",
     "next": "16.1.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "react-hook-form": "^7.71.2",
     "sileo": "^0.1.5"
   },
   "devDependencies": {

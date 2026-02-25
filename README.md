@@ -1,62 +1,78 @@
-# Análisis de la Aplicación
+# Analisis de la Aplicacion
 
-## Descripción
+## Descripcion
 
-Esto es el frontend de la aplicación de prueba para Tailor Hub. Su objetivo es mostrar los restaurantes favoritos de un usuario y las reseñas que ha publicado. (Ver API [aquí](https://github.com/Lelieur/TailorChallenge_Backend))
+Este repositorio contiene solo el frontend de la prueba de Tailor Hub y esta pensado para ejecutarse en local.
 
-## Características
+Backend de referencia (opcional):
+```text
+https://github.com/Lelieur/TailorChallenge_Backend
+```
 
-- **Funcionalidad 1**: Mostrar los restaurantes de forma paginada.
-- **Funcionalidad 2**: Mostrar una página de detalle de un restaurante.
-- **Funcionalidad 3**: Crear un restaurante.
-- **Funcionalidad 4**: Añadir un restaurante a favoritos.
-- **Funcionalidad 5**: Eliminar un restaurante de favoritos.
-- **Funcionalidad 6**: Crear una reseña para un restaurante.
-- **Funcionalidad 7**: Editar una reseña propia.
-- **Funcionalidad 8**: Eliminar una reseña propia.
-- **Funcionalidad 7**: Mostrar los restaurantes favoritos de un usuario.
-- **Funcionalidad 8**: Mostrar las reseñas que ha publicado un usuario.
+## Funcionalidades
 
-## Tecnologías Utilizadas
+1. Listado paginado de restaurantes.
+2. Pagina de detalle de un restaurante.
+3. Crear un restaurante.
+4. Anadir y quitar restaurantes de favoritos.
+5. Crear, editar y eliminar una resena propia.
+6. Ver favoritos y resenas de un usuario.
 
-- **Lenguaje de Programación**: TypeScript
-- **Framework**: Next.js
-- **Base de Datos**: MongoDB
-- **Otras Tecnologías**: Tailwind CSS
-- **APIs externas**:
-  - Google Maps API para cargar un mapa con la ubicación de los restaurantes.
-  - Cloudinary para subir y gestionar las imágenes del formulario para crear un nuevo restaurante.
+## Tecnologias (segun el repo)
 
-## Instalación
+Core
+- Next.js 16.1.6
+- React 19.2.4
+- TypeScript 5.9.3
 
-Para instalar la parte del cliente, sigue estos pasos:
+UI/UX
+- Tailwind CSS 4.2.0
+- Heroicons (@heroicons/react)
+- Sileo (toasts)
 
-1. Clona el repositorio del backend: `git clone https://github.com/Lelieur/TailorChallenge_Backend`
-2. Navega al directorio del proyecto: `cd TailorChallenge_Backend`
+Mapas
+- Mapbox GL
+- Mapbox Search (@mapbox/search-js-react)
 
-## Para ejecutar la aplicación, utiliza en ambas carpetas el siguiente comando:
+HTTP
+- Axios
 
-1. Asegúrate de que todas las dependencias estén instaladas:
+Testing
+- Vitest + coverage v8
+- Testing Library (react, user-event, jest-dom)
+- JSDOM
+
+Lint/Format
+- ESLint 9 + eslint-config-next
+- Prettier + prettier-plugin-tailwindcss
+
+## Requisitos
+
+1. Node.js (LTS recomendado).
+2. Backend en local si quieres flujo completo (ver enlace arriba).
+
+## Configuracion local
+
+1. Instala dependencias:
 
    ```bash
    npm install
    ```
 
-2. Si es necesario, construye el proyecto:
+2. Crea el archivo `.env` a partir de `.env.example` y completa tus claves:
 
    ```bash
-   npm run build
+   cp .env.example .env
    ```
 
-3. Luego, utiliza el siguiente comando en ambas carpetas para ejecutar la aplicación:
-   ```bash
-   npm run dev
-   ```
+3. Asegurate de que el backend permite CORS para el puerto donde corre Next.js (por defecto `5173`).
 
-## Configuración
+## Ejecutar en local
 
-Para configurar la aplicación, sigue estos pasos:
+```bash
+npm run dev
+```
 
-1. Copia el archivo `.env.example` a `.env`: `cp .env.example .env`
-2. Edita el archivo `.env` con tus credenciales y configuraciones específicas.
-3. El CORS de la API y de Google Maps API desde local es en el puerto 5173.
+## Notas
+
+- Este repo esta preparado para uso local. Los artefactos de build, coverage y cache se ignoran en `.gitignore`.
