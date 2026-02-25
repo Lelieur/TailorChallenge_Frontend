@@ -3,23 +3,15 @@ import Logo from "@/assets/logo";
 import LoginForm from "@/components/AuthForms/LoginForm/LoginForm";
 import Link from "next/link";
 
-export default async function Signin({
-  searchParams,
-}: {
-  searchParams?: Promise<{ error?: string }>;
-}): Promise<React.ReactNode> {
-  const { error } = (await searchParams) ?? {};
-
-  const errorText = error ? decodeURIComponent(error) : "";
-
+export default function Signin(): React.ReactNode {
   return (
-    <main className="h-full flex flex-col-reverse md:flex-row justify-center sm:items-end justify-between">
-      <div className="text-xs sm:text-base w-full md:w-1/2 bg-[var(--tailor-blue)] rounded-lg md:mr-7 p-4 text-white">
+    <main className="flex h-full flex-col-reverse justify-between justify-center sm:items-end md:flex-row">
+      <div className="w-full rounded-lg bg-[var(--tailor-blue)] p-4 text-xs text-white sm:text-base md:mr-7 md:w-1/2">
         <div className="mb-4 w-1/2 max-w-[194px]">
           <Logo />
         </div>
 
-        <LoginForm error={errorText} />
+        <LoginForm />
 
         <p className="mt-4 text-xs">
           ¿No tienes una cuenta?{" "}
