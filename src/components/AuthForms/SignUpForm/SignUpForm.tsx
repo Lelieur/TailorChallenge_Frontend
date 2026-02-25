@@ -59,7 +59,7 @@ export default function SignUpForm(): React.ReactNode {
             type="button"
             text="Siguiente"
             backgroundColor="white"
-            border="none"
+            noBorder
             action={handleNext}
           />
         </>
@@ -72,7 +72,7 @@ export default function SignUpForm(): React.ReactNode {
               type="submit"
               text="Finalizar"
               backgroundColor="white"
-              border="none"
+              noBorder
               disabled={isSubmitting}
             />
           </div>

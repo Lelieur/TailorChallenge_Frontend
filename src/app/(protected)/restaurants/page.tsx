@@ -1,10 +1,8 @@
-import RestaurantsList from '@/components/RestaurantComponents/RestaurantsList/RestaurantsList';
-import RestaurantsListSkeleton from '@/components/RestaurantComponents/RestaurantsList/RestaurantsListSkeleton';
+import RestaurantsList from "@/components/RestaurantComponents/RestaurantsList/RestaurantsList";
 
-import { Suspense } from 'react';
 import { getAllRestaurants } from "@/services/server/restaurant";
-import { Restaurant } from '@/interfaces/Restaurant.interface';
-import CustomMap from '@/components/Mapbox/Map/CustomMap';
+import { Restaurant } from "@/interfaces/Restaurant.interface";
+import CustomMap from "@/components/Mapbox/Map/CustomMap";
 
 export default async function Restaurants(): Promise<React.ReactNode> {
   const restaurants: Restaurant[] = await getAllRestaurants();
@@ -20,9 +18,7 @@ export default async function Restaurants(): Promise<React.ReactNode> {
         <CustomMap markers={markers} />
       </div>
       <div className="h-full w-full overflow-y-auto lg:w-1/2 lg:pt-0">
-        <Suspense fallback={<RestaurantsListSkeleton />}>
-          <RestaurantsList restaurants={restaurants} />
-        </Suspense>
+        <RestaurantsList restaurants={restaurants} />
       </div>
     </main>
   );

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowDownIcon } from "@heroicons/react/16/solid";
 import { User } from "@/interfaces/User.interface";
+import BasicButton from "../Buttons/BasicButton";
 
 export default function UserMenu({ loggedUser }: { loggedUser: User }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -22,7 +23,7 @@ export default function UserMenu({ loggedUser }: { loggedUser: User }) {
   }, []);
 
   return (
-    <div className="w-fit ml-auto gap-2" ref={ref}>
+    <div className="ml-auto w-fit gap-2" ref={ref}>
       <button
         type="button"
         onClick={() => setShowMenu((prev) => !prev)}
@@ -30,10 +31,10 @@ export default function UserMenu({ loggedUser }: { loggedUser: User }) {
         aria-controls="user-menu"
         className="hover:cursor-pointer"
       >
-        <span className="text-lg mr-2">{`¡Hola, ${loggedUser?.username}! :)`}</span>
+        <span className="mr-2 text-lg">{`¡Hola, ${loggedUser?.username}! :)`}</span>
         <span>
           <ArrowDownIcon
-            className={`w-3 h-3 inline-block ${
+            className={`inline-block h-3 w-3 ${
               showMenu ? "-rotate-180" : ""
             } transition-transform duration-500`}
           />
@@ -43,7 +44,7 @@ export default function UserMenu({ loggedUser }: { loggedUser: User }) {
       {showMenu && (
         <div
           id="user-menu"
-          className={`absolute z-10 right-0 top-full flex flex-col gap-5 bg-[var(--tailor-blue)] rounded-l-xl rounded-br-xl p-4 text-white text-lg transition-all duration-300 ease-in-out ${
+          className={`absolute top-full right-0 z-10 flex flex-col gap-5 rounded-l-xl rounded-br-xl bg-[var(--tailor-blue)] p-4 text-lg text-white transition-all duration-300 ease-in-out ${
             showMenu ? "translate-y-2 opacity-100" : "-translate-y-2 opacity-0"
           }`}
         >
@@ -60,12 +61,7 @@ export default function UserMenu({ loggedUser }: { loggedUser: User }) {
             <p className="m-0">Restaurantes</p>
           </Link>
           <form action="/api/auth/logout" method="post">
-            <button
-              type="submit"
-              className="bg-white text-black font-bold px-4 py-2 rounded-full w-full"
-            >
-              Salir
-            </button>
+            <BasicButton type="submit" text="Salir" backgroundColor="white" noBorder fullWidth />
           </form>
         </div>
       )}

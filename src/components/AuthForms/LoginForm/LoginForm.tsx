@@ -66,7 +66,7 @@ export default function LoginForm(): React.ReactNode {
         type="submit"
         text="Siguiente"
         backgroundColor="white"
-        border="none"
+        noBorder
         disabled={isSubmitting}
       />
     </form>
