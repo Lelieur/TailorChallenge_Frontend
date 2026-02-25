@@ -5,6 +5,7 @@
 Este repositorio contiene solo el frontend de la prueba de Tailor Hub y esta pensado para ejecutarse en local.
 
 Backend de referencia (opcional):
+
 ```text
 https://github.com/Lelieur/TailorChallenge_Backend
 ```
@@ -21,28 +22,34 @@ https://github.com/Lelieur/TailorChallenge_Backend
 ## Tecnologias (segun el repo)
 
 Core
+
 - Next.js 16.1.6
 - React 19.2.4
 - TypeScript 5.9.3
 
 UI/UX
+
 - Tailwind CSS 4.2.0
 - Heroicons (@heroicons/react)
 - Sileo (toasts)
 
 Mapas
+
 - Mapbox GL
 - Mapbox Search (@mapbox/search-js-react)
 
 HTTP
+
 - Axios
 
 Testing
+
 - Vitest + coverage v8
 - Testing Library (react, user-event, jest-dom)
 - JSDOM
 
 Lint/Format
+
 - ESLint 9 + eslint-config-next
 - Prettier + prettier-plugin-tailwindcss
 
@@ -65,7 +72,7 @@ Lint/Format
    cp .env.example .env
    ```
 
-3. Asegurate de que el backend permite CORS para el puerto donde corre Next.js (por defecto `5173`).
+3. Asegurate de que el backend permite CORS para el puerto donde corre Next.js (por defecto `http://localhost:5173`).
 
 ## Ejecutar en local
 

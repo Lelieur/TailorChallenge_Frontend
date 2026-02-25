@@ -5,7 +5,7 @@ class UploadServices {
 
   constructor() {
     this.axiosApp = axios.create({
-      baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api`,
+      baseURL: `${process.env.API_URL}/api`,
     });
   }
 
@@ -27,7 +27,7 @@ class UploadServices {
 
       const response = await axios.post(
         `https://api.cloudinary.com/v1_1/${cloudname}/auto/upload`,
-        formData
+        formData,
       );
 
       return response.data.secure_url;

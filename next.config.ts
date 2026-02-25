@@ -37,7 +37,6 @@ const nextConfig: NextConfig = {
       },
     },
   },
-  transpilePackages: ["@mui/material-nextjs"],
 };
 
 export default nextConfig;
