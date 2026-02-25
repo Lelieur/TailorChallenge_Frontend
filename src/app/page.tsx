@@ -17,12 +17,7 @@ export default function Home() {
           ;)
         </p>
         <Link href="/login">
-          <BasicButton
-            type="button"
-            text="Entrar"
-            position="right"
-            backgroundColor="[var(--tailor-grey)]"
-          />
+          <BasicButton type="button" text="Entrar" position="right" backgroundColor="transparent" />
         </Link>
       </div>
       <HeroImage src="/images/home.jpeg" />
