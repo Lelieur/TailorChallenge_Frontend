@@ -1,5 +1,5 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+﻿import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 import { SESSION_COOKIE, sessionCookieOptions } from "@/server/auth/session";
 
 export async function POST(req: Request) {
@@ -17,15 +17,18 @@ export async function POST(req: Request) {
   const data = await upstream.json().catch(() => null);
 
   if (!upstream.ok) {
-    const message = encodeURIComponent(data?.message ?? "Login failed");
-    redirect(`/login?error=${message}`);
+    return NextResponse.json(
+      { message: data?.message ?? "Login failed" },
+      { status: upstream.status || 500 },
+    );
   }
 
   const authToken = data?.authToken;
-  if (!authToken)
-    redirect(`/login?error=${encodeURIComponent("Login failed")}`);
+  if (!authToken) {
+    return NextResponse.json({ message: "Login failed" }, { status: 500 });
+  }
 
   (await cookies()).set(SESSION_COOKIE, authToken, sessionCookieOptions);
 
-  redirect("/restaurants");
+  return NextResponse.json({ ok: true }, { status: 200 });
 }

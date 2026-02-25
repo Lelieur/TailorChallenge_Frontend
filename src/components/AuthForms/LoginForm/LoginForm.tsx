@@ -1,32 +1,31 @@
-import Link from "next/link";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+﻿"use client";
 
-function mapError(error: string) {
-  if (!error) return "";
-  if (error === "Unable to authenticate the user.")
-    return "Datos de inicio de sesión incorrectos";
-  if (error === "User not found") return "El usuario no se ha encontrado";
-  if (error === "All fields are required") return "Rellena email y contraseña";
-  return "Error al iniciar sesión";
-}
+import BasicButton from "@/components/Buttons/BasicButton";
+import { loginClient } from "@/services/client/auth";
+import BackButton from "@/components/Buttons/BackButton";
+import { useState } from "react";
+import { handleSubmitWithToast } from "@/lib/handleWithToast";
+import { useRouter } from "next/navigation";
 
-export default function LoginForm({
-  error,
-}: {
-  error?: string;
-}): React.ReactNode {
-  const errorText = mapError(error ?? "");
+export default function LoginForm(): React.ReactNode {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   return (
-    <form action="/api/auth/login" method="post">
-      <Link
-        href="/"
-        className="inline-flex px-6 py-2 my-5 rounded-2xl border border-white font-bold hover:bg-white hover:text-[var(--tailor-blue)] transition-all duration-300"
-      >
-        <ArrowLeftIcon className="w-5 h-5" />
-      </Link>
-
-      {errorText && <p className="mb-4">{errorText}</p>}
+    <form
+      action="/api/auth/login"
+      method="post"
+      onSubmit={(e) =>
+        handleSubmitWithToast({
+          event: e,
+          apiCall: loginClient,
+          navigate: router.push,
+          success: "¡Bienvenido de nuevo!",
+          isSubmitting: setIsSubmitting,
+        })
+      }
+    >
+      <BackButton type="link" url="/" />
 
       <fieldset className="mb-3">
         <label htmlFor="email" className="font-bold">
@@ -40,7 +39,7 @@ export default function LoginForm({
           placeholder="Escribe tu email"
           required
           autoComplete="email"
-          className="mt-2 sm:mt-0 block w-3/4 rounded-full px-3 py-1 bg-transparent border border-white placeholder:text-white placeholder:opacity-50 focus:outline-none"
+          className="mt-2 block w-3/4 rounded-full border border-white bg-transparent px-3 py-1 placeholder:text-white placeholder:opacity-50 focus:outline-none sm:mt-0"
         />
       </fieldset>
 
@@ -59,16 +58,17 @@ export default function LoginForm({
           minLength={8}
           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$"
           title="Mínimo 8 caracteres, con mayúscula, minúscula, número y carácter especial"
-          className="mt-2 sm:mt-0 block w-3/4 rounded-full px-3 py-1 bg-transparent border border-white placeholder:text-white placeholder:opacity-50"
+          className="mt-2 block w-3/4 rounded-full border border-white bg-transparent px-3 py-1 placeholder:text-white placeholder:opacity-50 focus:outline-none sm:mt-0"
         />
       </fieldset>
 
-      <button
-        className="px-6 py-2 rounded-2xl bg-white text-black font-bold hover:bg-black hover:text-white transition-all duration-300"
+      <BasicButton
         type="submit"
-      >
-        Entrar
-      </button>
+        text="Siguiente"
+        backgroundColor="white"
+        border="none"
+        disabled={isSubmitting}
+      />
     </form>
   );
 }
