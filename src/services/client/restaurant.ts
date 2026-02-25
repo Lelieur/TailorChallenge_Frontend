@@ -1,4 +1,4 @@
-import { http } from "@/services/http/client";
+﻿import { http } from "@/services/http/client";
 import type { Restaurant } from "@/interfaces/Restaurant.interface";
 
 class RestaurantsClientServices {
