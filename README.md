@@ -1,85 +1,65 @@
-# Analisis de la Aplicacion
+# TailorHub Frontend
 
-## Descripcion
+Frontend en `Next.js + React + TypeScript` para la prueba tecnica de TailorHub.
 
-Este repositorio contiene solo el frontend de la prueba de Tailor Hub y esta pensado para ejecutarse en local.
+Estado actual:
 
-Backend de referencia (opcional):
+- Runtime principal en `Next.js 16` con App Router.
+- Mapas y geocoding via `Mapbox GL + SearchBox`.
+- Autenticacion con cookies HttpOnly y rutas protegidas en servidor.
+
+## Stack
+
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS
+- Axios
+- Mapbox GL + Mapbox Search
+- Vitest + Testing Library + JSDOM
+- ESLint + Prettier
+
+## Requisitos
+
+- Node.js `>= 20.19`
+- Backend accesible (ver repositorio backend)
+
+## Configuracion
+
+1. Crea/copia las variables de entorno desde `.env.example`.
+2. Para desarrollo local, usa `.env.local` (Next lo prioriza cuando `NODE_ENV !== production`).
+
+Variables clave:
+
+- `API_URL` (base URL del backend usada en rutas server y proxy)
+- `NEXT_PUBLIC_API_URL` (base URL usada en cliente)
+- `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN`
+
+## Scripts
+
+- `npm run dev`: ejecuta frontend en modo desarrollo (`http://localhost:5173`).
+- `npm run build`: genera el build de producción.
+- `npm start`: ejecuta el build compilado.
+- `npm run test`: ejecuta tests.
+- `npm run test:coverage`: cobertura de tests.
+- `npm run lint`: linting.
+- `npm run typecheck`: chequeo de tipos.
+
+## Funcionalidades
+
+- Listado paginado de restaurantes.
+- Página de detalle de restaurante.
+- Crear restaurante.
+- Añadir y quitar restaurantes de favoritos.
+- Crear, editar y eliminar una reseña propia.
+- Ver favoritos y reseñas de un usuario.
+
+## Repositorio backend (referencia)
 
 ```text
 https://github.com/Lelieur/TailorChallenge_Backend
 ```
 
-## Funcionalidades
-
-1. Listado paginado de restaurantes.
-2. Pagina de detalle de un restaurante.
-3. Crear un restaurante.
-4. Anadir y quitar restaurantes de favoritos.
-5. Crear, editar y eliminar una resena propia.
-6. Ver favoritos y resenas de un usuario.
-
-## Tecnologias (segun el repo)
-
-Core
-
-- Next.js 16.1.6
-- React 19.2.4
-- TypeScript 5.9.3
-
-UI/UX
-
-- Tailwind CSS 4.2.0
-- Heroicons (@heroicons/react)
-- Sileo (toasts)
-
-Mapas
-
-- Mapbox GL
-- Mapbox Search (@mapbox/search-js-react)
-
-HTTP
-
-- Axios
-
-Testing
-
-- Vitest + coverage v8
-- Testing Library (react, user-event, jest-dom)
-- JSDOM
-
-Lint/Format
-
-- ESLint 9 + eslint-config-next
-- Prettier + prettier-plugin-tailwindcss
-
-## Requisitos
-
-1. Node.js (LTS recomendado).
-2. Backend en local si quieres flujo completo (ver enlace arriba).
-
-## Configuracion local
-
-1. Instala dependencias:
-
-   ```bash
-   npm install
-   ```
-
-2. Crea el archivo `.env` a partir de `.env.example` y completa tus claves:
-
-   ```bash
-   cp .env.example .env
-   ```
-
-3. Asegurate de que el backend permite CORS para el puerto donde corre Next.js (por defecto `http://localhost:5173`).
-
-## Ejecutar en local
-
-```bash
-npm run dev
-```
-
 ## Notas
 
-- Este repo esta preparado para uso local. Los artefactos de build, coverage y cache se ignoran en `.gitignore`.
+- Repo preparado para uso local. Artefactos de build, coverage y cache ignorados en `.gitignore`.
