@@ -26,8 +26,7 @@ Estado actual:
 
 ## Configuracion
 
-1. Crea/copia las variables de entorno desde `.env.example`.
-2. Para desarrollo local, usa `.env.local` (Next lo prioriza cuando `NODE_ENV !== production`).
+1. Crea/copia las variables de entorno desde `.env.example` a `.env`.
 
 Variables clave:
 
@@ -43,7 +42,7 @@ Variables clave:
 2. Instala dependencias:
    - `npm install`
 3. Configura entorno:
-   - copia `.env.example` a `.env.local`
+   - copia `.env.example` a `.env`
 4. Ejecuta la aplicacion:
    - `npm run dev`
 
