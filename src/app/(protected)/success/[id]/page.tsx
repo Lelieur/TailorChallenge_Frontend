@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Icono from "@/assets/icono.svg";
+import BasicButton from "@/components/Buttons/BasicButton";
 
 export default async function Success({
   params,
@@ -8,15 +9,11 @@ export default async function Success({
 }): Promise<React.ReactNode> {
   const { id } = await params;
   return (
-    <div className="m-auto flex flex-col items-center justify-between h-1/4">
+    <div className="m-auto flex h-1/4 flex-col items-center justify-between">
       <Icono />
-      <p className="font-bold text-[var(--tailor-blue)]">
-        Restaurante guardado
-      </p>
+      <p className="font-bold text-[var(--tailor-blue)]">Restaurante guardado</p>
       <Link href={`/restaurants/${id}`}>
-        <button className="block w-full border border-black rounded-full px-4 py-2">
-          Ver restaurante
-        </button>
+        <BasicButton type="button" text="Ver restaurante" backgroundColor="white" />
       </Link>
       <Icono />
     </div>

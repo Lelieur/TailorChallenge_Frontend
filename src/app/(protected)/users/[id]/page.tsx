@@ -6,6 +6,8 @@ import RestaurantCard from "@/components/RestaurantComponents/RestaurantCard/Res
 import { Restaurant } from "@/interfaces/Restaurant.interface";
 import { Review } from "@/interfaces/Review.inteface";
 import { getUserById } from "@/services/server/user";
+import { getRestaurantById } from "@/services/server/restaurant";
+import { getReviewById } from "@/services/server/review";
 
 export default async function UserPage({
   params,
@@ -14,12 +16,24 @@ export default async function UserPage({
 }): Promise<React.ReactNode> {
   const { id } = await params;
   const userData: User = await getUserById(id);
-  const { username, email, favoriteRestaurants, reviews } = userData;
+  const { username, email } = userData;
+
+  const favouriteRestaurants: Restaurant[] = await Promise.all(
+    userData.favoriteRestaurants.map((restaurantId) => {
+      return getRestaurantById(restaurantId);
+    }),
+  );
+
+  const userReviews: Review[] = await Promise.all(
+    userData.reviews.map((reviewId) => {
+      return getReviewById(reviewId);
+    }),
+  );
 
   return (
     <main className="lg:overflow-y-hidden">
-      <div className="bg-[var(--tailor-blue)] text-white p-4 rounded-lg">
-        <h3 className="text-xl font-bold ">Tus datos personales</h3>
+      <div className="rounded-lg bg-[var(--tailor-blue)] p-4 text-white">
+        <h3 className="text-xl font-bold">Tus datos personales</h3>
         <hr className="my-2 w-1/6 text-white" />
         <p className="text-sm font-bold">
           Nombre: <span className="font-normal">{username}</span>
@@ -29,29 +43,23 @@ export default async function UserPage({
         </p>
       </div>
       <div className="grid grid-cols-10 gap-4 lg:h-full">
-        <div className="mt-7 col-span-10 lg:col-span-6 flex flex-col gap-4 md:overflow-y-auto h-full">
+        <div className="col-span-10 mt-7 flex h-full flex-col gap-4 md:overflow-y-auto lg:col-span-6">
           <p className="text-xl font-bold">
-            {`${favoriteRestaurants?.length} Restaurantes favoritos`}
+            {`${favouriteRestaurants?.length} Restaurantes favoritos`}
           </p>
           <hr className="border-[var(--tailor-blue)]" />
-          <div className="flex flex-col gap-4 lg:overflow-y-scroll h-full">
-            {favoriteRestaurants?.map((restaurant, index) => (
+          <div className="flex h-full flex-col gap-4 lg:overflow-y-scroll">
+            {favouriteRestaurants?.map((restaurant, index) => (
               <RestaurantCard key={index} data={restaurant as Restaurant} />
             ))}
           </div>
         </div>
-        <div className="mt-7 col-span-10 lg:col-span-4 flex flex-col gap-4 md:overflow-y-auto lg:h-full">
-          <p className="text-xl font-bold">
-            {`${reviews?.length} Reseñas publicadas`}
-          </p>
+        <div className="col-span-10 mt-7 flex flex-col gap-4 md:overflow-y-auto lg:col-span-4 lg:h-full">
+          <p className="text-xl font-bold">{`${userReviews?.length} Reseñas publicadas`}</p>
           <hr className="border-[var(--tailor-blue)]" />
-          <div className="lg:overflow-y-scroll lg:h-full">
-            {reviews?.map((review, index) => (
-              <ReviewCard
-                key={index}
-                review={review as Review}
-                currentUserId={id}
-              />
+          <div className="lg:h-full lg:overflow-y-scroll">
+            {userReviews?.map((review, index) => (
+              <ReviewCard key={index} review={review as Review} currentUserId={id} />
             ))}
           </div>
         </div>
