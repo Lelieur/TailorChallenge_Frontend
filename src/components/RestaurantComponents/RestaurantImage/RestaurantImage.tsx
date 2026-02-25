@@ -1,6 +1,3 @@
-"use client";
-
-import { useState } from "react";
 import Image from "next/image";
 
 export default function RestaurantImageCard({
@@ -14,15 +11,6 @@ export default function RestaurantImageCard({
   height?: string;
   isCard?: boolean;
 }): React.ReactNode {
-  const [srcImage, setSrcImage] = useState(src);
-  const fallbackSrc = "/images/home.jpeg";
-
-  const handleImageError = () => {
-    if (srcImage !== fallbackSrc) {
-      setSrcImage(fallbackSrc);
-    }
-  };
-
   return (
     <div
       className={`${
@@ -32,10 +20,9 @@ export default function RestaurantImageCard({
       }`}
     >
       <Image
-        src={srcImage}
+        src={src}
         alt="Restaurant image"
         className="w-full h-full object-cover"
-        onError={handleImageError}
         fill
         sizes="full"
         priority

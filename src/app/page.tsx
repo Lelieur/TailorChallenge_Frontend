@@ -1,27 +1,28 @@
 import Link from "next/link";
 import HeroImage from "@/components/HeroImage/HeroImage";
 import Logo from "@/assets/logo";
+import BasicButton from "@/components/Buttons/BasicButton";
 
 export default function Home() {
   return (
-    <main className="h-full flex flex-col-reverse md:flex-row items-end justify-between">
-      <div className="w-full md:w-1/2 bg-[var(--tailor-grey)] rounded-lg md:mr-7 p-4">
+    <main className="flex h-full flex-col-reverse items-end justify-between md:flex-row">
+      <div className="w-full rounded-lg bg-[var(--tailor-grey)] p-4 md:mr-7 md:w-1/2">
         <div className="mb-4 w-1/2 max-w-[194px]">
           <Logo />
         </div>
         <p>Hola,</p>
-        <p>
-          Bienvenido de nuevo a mi prueba para Tailor Hub (esto parece un dejá
-          vu).
-        </p>
+        <p>Bienvenido de nuevo a mi prueba para Tailor Hub (esto parece un dejá vu).</p>
         <p className="mb-10">
-          A ver si esta vez sí que consigo convenceros de que soy la persona que
-          estábais buscando ;)
+          A ver si esta vez sí que consigo convenceros de que soy la persona que estábais buscando
+          ;)
         </p>
         <Link href="/login">
-          <button className="px-6 py-2 rounded-2xl border border-black font-bold hover:bg-black hover:text-white transition-all duration-300">
-            Entrar
-          </button>
+          <BasicButton
+            type="button"
+            text="Entrar"
+            position="right"
+            backgroundColor="[var(--tailor-grey)]"
+          />
         </Link>
       </div>
       <HeroImage src="/images/home.jpeg" />

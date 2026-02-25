@@ -1,4 +1,4 @@
-import Stars from "../../Stars/Stars";
+import Stars from "../../Stars/StaticStars/Stars";
 import RestaurantImage from "../RestaurantImage/RestaurantImage";
 import RestaurantCuisineType from "../RestaurantCuisineType/RestaurantCuisineType";
 import RestaurantOperatingHours from "../RestaurantOperatingHours/RestaurantOperatingHours";

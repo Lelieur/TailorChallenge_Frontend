@@ -43,21 +43,10 @@
 }
 
 :root {
-  /*   --background: #ffffff;
-  --foreground: #171717; */
-  --tailor-grey: #F1F1F0;
-  --tailor-blue: #264BEB
+  --tailor-grey: #f1f1f0;
+  --tailor-blue: #264beb;
 }
 
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-} */
-
 body {
-  /*   color: var(--foreground);
-  background: var(--background); */
   font-family: "Roobert", sans-serif;
 }
