@@ -35,6 +35,18 @@ Variables clave:
 - `NEXT_PUBLIC_API_URL` (base URL usada en cliente)
 - `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN`
 
+## Levantar en local
+
+1. Clona el repositorio y entra al directorio:
+   - `git clone <repo-url>`
+   - `cd TailorChallenge_Frontend`
+2. Instala dependencias:
+   - `npm install`
+3. Configura entorno:
+   - copia `.env.example` a `.env.local`
+4. Ejecuta la aplicacion:
+   - `npm run dev`
+
 ## Scripts
 
 - `npm run dev`: ejecuta frontend en modo desarrollo (`http://localhost:5173`).
