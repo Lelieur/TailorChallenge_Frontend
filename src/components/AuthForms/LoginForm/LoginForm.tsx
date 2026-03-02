@@ -13,7 +13,6 @@ export default function LoginForm(): React.ReactNode {
 
   return (
     <form
-      action="/api/auth/login"
       method="post"
       onSubmit={(e) =>
         handleSubmitWithToast({

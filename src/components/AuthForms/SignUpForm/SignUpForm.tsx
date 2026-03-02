@@ -34,7 +34,6 @@ export default function SignUpForm(): React.ReactNode {
   return (
     <form
       ref={formRef}
-      action="/api/auth/signup"
       method="post"
       onSubmit={(e) =>
         handleSubmitWithToast({

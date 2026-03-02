@@ -20,6 +20,7 @@ const BASE_DOMAINS = [
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  reactCompiler: true,
 
   images: {
     remotePatterns: BASE_DOMAINS.flatMap((d) => [
