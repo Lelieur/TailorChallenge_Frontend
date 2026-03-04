@@ -11,11 +11,13 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className="h-screen w-screen">
-      <body className="flex h-full w-full flex-col px-2 pt-2 pb-3 sm:px-7 sm:pt-7">
-        <Toaster />
-        {children}
-        <Footer />
+    <html lang="es" className="h-full w-full">
+      <body className="flex h-full w-full flex-col">
+        <div className="flex h-full w-full flex-col px-2 pt-2 pb-3 sm:px-7 sm:pt-7">
+          <Toaster />
+          {children}
+          <Footer />
+        </div>
       </body>
     </html>
   );

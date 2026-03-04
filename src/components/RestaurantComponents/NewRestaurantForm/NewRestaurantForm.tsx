@@ -15,7 +15,15 @@ import AutocompleteAddress from "@/components/Mapbox/Search/AutocompleteAddress"
 import { handleSubmitWithToast } from "@/lib/handleWithToast";
 import BasicButton from "@/components/Buttons/BasicButton";
 import { Checkbox } from "@/components/ui/checkbox";
-
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 const DAYS_ES = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"] as const;
 
 type DayEs = (typeof DAYS_ES)[number];
@@ -264,7 +272,21 @@ export default function NewRestaurantForm({ loggedUserId }: { loggedUserId: stri
             </div>
             <div>
               <label htmlFor="cuisine_type">Tipo de cocina:</label>
-              <select
+              <Select>
+                <SelectTrigger className="rounded-full border-black">
+                  <SelectValue placeholder="Selecciona..." />
+                </SelectTrigger>
+                <SelectContent position="item-aligned">
+                  <SelectGroup>
+                    <SelectItem value="Asian">🍱 Asiática</SelectItem>
+                    <SelectItem value="American">🍔 Americana</SelectItem>
+                    <SelectItem value="Pizza">🍕 Pizza</SelectItem>
+                    <SelectItem value="Mexican">🌮 Mexicana</SelectItem>
+                    <SelectItem value="Healthy">🥗 Saludable</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              {/* <select
                 id="cuisine_type"
                 name="cuisine_type"
                 className="block w-full rounded-xl border border-black px-3 py-1 focus:outline-none"
@@ -275,7 +297,7 @@ export default function NewRestaurantForm({ loggedUserId }: { loggedUserId: stri
                 <option value="American">🍔 Americana</option>
                 <option value="Pizza">🍕 Pizza</option>
                 <option value="Mexican">🌮 Mexicana</option>
-              </select>
+              </select> */}
             </div>
           </div>
           <div>

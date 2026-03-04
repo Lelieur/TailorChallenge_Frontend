@@ -11,6 +11,7 @@ const themeLikeTailwindInput = {
     fontFamily: "inherit",
     padding: "0.25rem 0.75rem",
     border: "1px solid #000",
+    borderRadius: "9999px",
     boxShadow: "none",
     colorText: "#000",
     colorBackground: "#fff",

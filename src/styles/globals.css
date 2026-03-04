@@ -50,3 +50,12 @@
 body {
   font-family: "Roobert", sans-serif;
 }
+
+html {
+  scrollbar-gutter: stable;
+}
+
+body[data-scroll-locked] {
+  margin-right: 0 !important;
+  overflow-y: scroll !important;
+}
