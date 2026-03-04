@@ -1,5 +1,4 @@
-﻿import { SignUpUser } from "@/interfaces/User.interface";
-import { mapLoginError, mapSignupError } from "@/lib/auth/errors";
+﻿import { mapLoginError, mapSignupError } from "@/lib/auth/errors";
 
 type LoginResponse = { ok?: boolean; message?: string };
 type SignupResponse = { ok?: boolean; message?: string };

@@ -1,7 +1,5 @@
 ﻿import HeroImage from "@/components/HeroImage/HeroImage";
 import Logo from "@/assets/logo";
-import Link from "next/link";
-import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import SignUpForm from "@/components/AuthForms/SignUpForm/SignUpForm";
 
 export default async function SignUp(): Promise<React.ReactNode> {

@@ -8,6 +8,7 @@ import BasicButton from "@/components/Buttons/BasicButton";
 import BackButton from "@/components/Buttons/BackButton";
 import { handleSubmitWithToast } from "@/lib/handleWithToast";
 import { useRouter } from "next/navigation";
+import { getPasswordValidation } from "@/features/auth/utils/passwordValidation";
 
 export default function SignUpForm(): React.ReactNode {
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -31,19 +32,23 @@ export default function SignUpForm(): React.ReactNode {
     setIsStep1Complete(true);
   };
 
+  const passwordValidation = getPasswordValidation(formDataValues.password);
+
   return (
     <form
       ref={formRef}
       method="post"
       onSubmit={(e) =>
-        handleSubmitWithToast({
-          event: e,
-          apiCall: signupClient,
-          navigate: router.push,
-          success: "¡Cuenta creada exitosamente!",
-          values: formDataValues,
-          isSubmitting: setIsSubmitting,
-        })
+        passwordValidation.isValid
+          ? handleSubmitWithToast({
+              event: e,
+              apiCall: signupClient,
+              navigate: router.push,
+              success: "¡Cuenta creada exitosamente!",
+              values: formDataValues,
+              isSubmitting: setIsSubmitting,
+            })
+          : formRef.current?.reportValidity()
       }
     >
       {!isStep1Complete ? (
@@ -72,7 +77,7 @@ export default function SignUpForm(): React.ReactNode {
               text="Finalizar"
               backgroundColor="white"
               noBorder
-              disabled={isSubmitting}
+              disabled={isSubmitting || !passwordValidation.isValid}
             />
           </div>
         </>

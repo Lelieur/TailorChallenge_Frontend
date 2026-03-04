@@ -3,25 +3,39 @@
 import BasicButton from "@/components/Buttons/BasicButton";
 import { loginClient } from "@/services/client/auth";
 import BackButton from "@/components/Buttons/BackButton";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { handleSubmitWithToast } from "@/lib/handleWithToast";
 import { useRouter } from "next/navigation";
+import { getPasswordValidation } from "@/features/auth/utils/passwordValidation";
 
 export default function LoginForm(): React.ReactNode {
+  const formRef = useRef<HTMLFormElement | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formDataValues, setFormDataValues] = useState({
+    email: "",
+    password: "",
+  });
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormDataValues((prev) => ({ ...prev, [name]: value }));
+  };
   const router = useRouter();
+  const validation = getPasswordValidation(formDataValues.password);
 
   return (
     <form
       method="post"
       onSubmit={(e) =>
-        handleSubmitWithToast({
-          event: e,
-          apiCall: loginClient,
-          navigate: router.push,
-          success: "¡Bienvenido de nuevo!",
-          isSubmitting: setIsSubmitting,
-        })
+        validation.isValid
+          ? handleSubmitWithToast({
+              event: e,
+              apiCall: loginClient,
+              navigate: router.push,
+              values: formDataValues,
+              success: "¡Bienvenido de nuevo!",
+              isSubmitting: setIsSubmitting,
+            })
+          : formRef.current?.reportValidity()
       }
     >
       <BackButton type="link" url="/" />
@@ -32,6 +46,7 @@ export default function LoginForm(): React.ReactNode {
         </label>
 
         <input
+          onChange={handleChange}
           type="email"
           id="email"
           name="email"
@@ -48,6 +63,7 @@ export default function LoginForm(): React.ReactNode {
         </label>
 
         <input
+          onChange={handleChange}
           type="password"
           id="password"
           name="password"
@@ -61,12 +77,20 @@ export default function LoginForm(): React.ReactNode {
         />
       </fieldset>
 
+      {formDataValues.password && !validation.isValid ? (
+        <ul id="password-errors" className="mt-2 text-sm text-red-200" aria-live="polite">
+          {validation.errors.map((error) => (
+            <li key={error}>{error}</li>
+          ))}
+        </ul>
+      ) : null}
+
       <BasicButton
         type="submit"
         text="Siguiente"
         backgroundColor="white"
         noBorder
-        disabled={isSubmitting}
+        disabled={isSubmitting || !validation.isValid}
       />
     </form>
   );

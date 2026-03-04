@@ -14,20 +14,25 @@ import { MapboxSelection } from "@/lib/mapbox/types";
 import AutocompleteAddress from "@/components/Mapbox/Search/AutocompleteAddress";
 import { handleSubmitWithToast } from "@/lib/handleWithToast";
 import BasicButton from "@/components/Buttons/BasicButton";
+import { Checkbox } from "@/components/ui/checkbox";
 
-const DAYS = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
-] as const;
+const DAYS_ES = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"] as const;
 
-type Day = (typeof DAYS)[number];
+type DayEs = (typeof DAYS_ES)[number];
+type DayEn = keyof Restaurant["operating_hours"];
 
-type Hours = Record<Day, string>;
+const DAY_EQUIVALENCE: Record<DayEs, DayEn> = {
+  Lunes: "Monday",
+  Martes: "Tuesday",
+  Miércoles: "Wednesday",
+  Jueves: "Thursday",
+  Viernes: "Friday",
+  Sábado: "Saturday",
+  Domingo: "Sunday",
+};
+
+type Hours = Record<DayEs, string>;
+type ClosedDays = Record<DayEs, boolean>;
 
 function formatTime(value: string): string {
   if (!value) return "";
@@ -39,12 +44,21 @@ function formatTime(value: string): string {
   return `${hour12}:${m} ${period}`;
 }
 
-function buildOperatingHours(openHours: Hours, closeHours: Hours): Restaurant["operating_hours"] {
-  return DAYS.reduce(
+function buildOperatingHours(
+  openHours: Hours,
+  closeHours: Hours,
+  closedDays: ClosedDays,
+): Restaurant["operating_hours"] {
+  return DAYS_ES.reduce(
     (acc, day) => {
+      const enDay = DAY_EQUIVALENCE[day];
+      if (closedDays[day]) {
+        acc[enDay] = "-";
+        return acc;
+      }
       const open = openHours[day];
       const close = closeHours[day];
-      acc[day] = open && close ? `${formatTime(open)} - ${formatTime(close)}` : "-";
+      acc[enDay] = open && close ? `${formatTime(open)} - ${formatTime(close)}` : "-";
       return acc;
     },
     {} as Restaurant["operating_hours"],
@@ -52,10 +66,17 @@ function buildOperatingHours(openHours: Hours, closeHours: Hours): Restaurant["o
 }
 
 function emptyHours(): Hours {
-  return DAYS.reduce((acc, day) => {
+  return DAYS_ES.reduce((acc, day) => {
     acc[day] = "";
     return acc;
   }, {} as Hours);
+}
+
+function emptyClosedDays(): ClosedDays {
+  return DAYS_ES.reduce((acc, day) => {
+    acc[day] = false;
+    return acc;
+  }, {} as ClosedDays);
 }
 
 export default function NewRestaurantForm({ loggedUserId }: { loggedUserId: string }) {
@@ -71,6 +92,7 @@ export default function NewRestaurantForm({ loggedUserId }: { loggedUserId: stri
   const [latlng, setLatlng] = useState({ lat: 0, lng: 0 });
   const [openHours, setOpenHours] = useState<Hours>(emptyHours());
   const [closeHours, setCloseHours] = useState<Hours>(emptyHours());
+  const [closedDays, setClosedDays] = useState<ClosedDays>(emptyClosedDays());
 
   const handleAddressChanged = (sel: MapboxSelection) => {
     setAddress(sel.label);
@@ -101,14 +123,50 @@ export default function NewRestaurantForm({ loggedUserId }: { loggedUserId: stri
 
   const handleOpenHoursChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const day = name as Day;
+    const day = name as DayEs;
     setOpenHours((prev) => ({ ...prev, [day]: value }));
   };
 
   const handleCloseHoursChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    const day = name as Day;
+    const day = name as DayEs;
     setCloseHours((prev) => ({ ...prev, [day]: value }));
+  };
+
+  const handleClosedToggle = (day: DayEs) => {
+    setClosedDays((prev) => {
+      const next = { ...prev, [day]: !prev[day] };
+      return next;
+    });
+    setOpenHours((prev) => ({ ...prev, [day]: "" }));
+    setCloseHours((prev) => ({ ...prev, [day]: "" }));
+  };
+
+  const applyHoursToDays = (sourceDay: DayEs, targetDays: readonly DayEs[]) => {
+    const open = openHours[sourceDay];
+    const close = closeHours[sourceDay];
+    const isClosed = closedDays[sourceDay];
+    setOpenHours((prev) => {
+      const next = { ...prev };
+      targetDays.forEach((day) => {
+        next[day] = open;
+      });
+      return next;
+    });
+    setCloseHours((prev) => {
+      const next = { ...prev };
+      targetDays.forEach((day) => {
+        next[day] = close;
+      });
+      return next;
+    });
+    setClosedDays((prev) => {
+      const next = { ...prev };
+      targetDays.forEach((day) => {
+        isClosed ? (next[day] = true) : (next[day] = false);
+      });
+      return next;
+    });
   };
 
   const apiCall = async (formData: FormData) => {
@@ -120,7 +178,7 @@ export default function NewRestaurantForm({ loggedUserId }: { loggedUserId: stri
       description: String(formData.get("description") ?? ""),
       cuisine_type: String(formData.get("cuisine_type") ?? ""),
       latlng,
-      operating_hours: buildOperatingHours(openHours, closeHours),
+      operating_hours: buildOperatingHours(openHours, closeHours, closedDays),
       reviews: [],
       createdBy: loggedUserId || "",
     };
@@ -231,34 +289,67 @@ export default function NewRestaurantForm({ loggedUserId }: { loggedUserId: stri
           </div>
         </div>
         <div className="col-span-2">
-          <label htmlFor="operating_hours">Horarios de apertura:</label>
-          {DAYS.map((day) => (
-            <div key={day} className="mb-2 grid grid-cols-3 items-center text-base">
-              <label htmlFor={day} className="col-span-1">
+          <label className="mb-2 block" htmlFor="operating_hours">
+            Horarios de apertura:
+          </label>
+          <div className="mb-2 flex flex-wrap items-center gap-2 text-sm">
+            <BasicButton
+              type="button"
+              text="Copiar lunes a todos"
+              action={() => applyHoursToDays("Lunes", DAYS_ES)}
+            />
+            <BasicButton
+              type="button"
+              text="Lun–Vie"
+              action={() =>
+                applyHoursToDays("Lunes", ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"])
+              }
+            />
+            <BasicButton
+              type="button"
+              text="Sáb–Dom"
+              action={() => applyHoursToDays("Sábado", ["Sábado", "Domingo"])}
+            />
+          </div>
+          {DAYS_ES.map((day) => (
+            <div key={day} className="grid h-10 grid-cols-10 items-center text-base">
+              <label htmlFor={day} className="col-span-2">
                 {day}:
               </label>
-              <div className="col-span-2 flex rounded-xl border border-black px-3 py-1">
-                <span>De:</span>
-                <input
-                  type="time"
-                  id={day}
-                  name={day}
-                  value={openHours[day]}
-                  onChange={handleOpenHoursChange}
-                  className="w-1/2 cursor-pointer text-center focus:outline-none"
-                  required
+              <label className="col-span-2 flex items-center gap-2 text-sm">
+                <Checkbox
+                  className="cursor-pointer"
+                  checked={closedDays[day]}
+                  onCheckedChange={() => handleClosedToggle(day)}
                 />
-                <span>a</span>
-                <input
-                  type="time"
-                  id={day}
-                  name={day}
-                  value={closeHours[day]}
-                  onChange={handleCloseHoursChange}
-                  className="w-1/2 cursor-pointer text-center focus:outline-none"
-                  required
-                />
-              </div>
+                Cerrado
+              </label>
+              {!closedDays[day] && (
+                <div className="col-span-6 mr-0 flex items-center gap-2 rounded-xl border border-black px-3 py-1">
+                  <span>De:</span>
+                  <input
+                    type="time"
+                    id={day}
+                    name={day}
+                    value={openHours[day]}
+                    onChange={handleOpenHoursChange}
+                    className={`w-1/2 ${!closedDays[day] && "cursor-pointer"} text-center focus:outline-none`}
+                    required={!closedDays[day]}
+                    disabled={closedDays[day]}
+                  />
+                  <span>a</span>
+                  <input
+                    type="time"
+                    id={day}
+                    name={day}
+                    value={closeHours[day]}
+                    onChange={handleCloseHoursChange}
+                    className={`w-1/2 ${!closedDays[day] && "cursor-pointer"} text-center focus:outline-none`}
+                    required={!closedDays[day]}
+                    disabled={closedDays[day]}
+                  />
+                </div>
+              )}
             </div>
           ))}
         </div>

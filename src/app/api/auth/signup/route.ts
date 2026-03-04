@@ -1,4 +1,6 @@
-﻿import { NextResponse } from "next/server";
+﻿import { SESSION_COOKIE, sessionCookieOptions } from "@/server/auth/session";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   const form = await req.formData();
@@ -21,6 +23,13 @@ export async function POST(req: Request) {
       { status: upstream.status || 500 },
     );
   }
+
+  const authToken = data?.authToken;
+  if (!authToken) {
+    return NextResponse.json({ message: "Signup failed" }, { status: 500 });
+  }
+
+  (await cookies()).set(SESSION_COOKIE, authToken, sessionCookieOptions);
 
   return NextResponse.json({ ok: true }, { status: 200 });
 }
